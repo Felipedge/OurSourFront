@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.oursour.ui.theme.OurSourTheme
+import com.example.oursour.view.LoginScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             OurSourTheme {
+                LoginScreen(
+                    email = "",
+                    password = "",
+                    mostrarPassword = false,
+                    errorEmail = null,
+                    errorPassword = null,
+                    errorGeneral = null,
+                    cargando = false,
+                    onEmailChange = {},
+                    onPasswordChange = {},
+                    onMostrarPasswordClick = {},
+                    onLoginClick = {},
+                    onRegistroClick = {}
+                )
 
             }
         }
