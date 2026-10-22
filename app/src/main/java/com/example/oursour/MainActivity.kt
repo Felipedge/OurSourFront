@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.oursour.ui.theme.OurSourTheme
 import com.example.oursour.view.LoginScreen
 import com.example.oursour.view.PagoScreen
+import com.example.oursour.view.ResultadoPagoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +22,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             OurSourTheme {
-                PagoScreen()
+                ResultadoPagoScreen()
+                //PagoScreen()
+                //LoginScreen (
+                   // email = "",
+                    //password = "",
+                    //mostrarPassword = false,
+                    //errorEmail = null,
+                    //errorPassword = null,
+                    //errorGeneral = null,
+                    //cargando = false,
+                    //onEmailChange = {},
+                    //onPasswordChange = {},
+                    //onMostrarPasswordClick = {},
+                    //onLoginClick = {},
+                    //onRegistroClick = {}
 
+                //)
 
             }
         }
