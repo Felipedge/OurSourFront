@@ -12,13 +12,13 @@ class DespachoViewModel: ViewModel() {
     var comuna by mutableStateOf("")
     var ciudad by mutableStateOf("")
     var referencia by mutableStateOf("")
-    var textoVisible by mutableStateOf("")
+    var textoVisible by mutableStateOf(false)
 
     fun cambiarCalle(nuevaCalle: String) {
         calle = nuevaCalle
     }
 
-    fun cambiarNumer(nuevoNumero: String) {
+    fun cambiarNumero(nuevoNumero: String) {
         numero = nuevoNumero
     }
 
@@ -26,7 +26,7 @@ class DespachoViewModel: ViewModel() {
         comuna = nuevaComuna
     }
 
-    fun CambiarCiudad(nuevaCiudad: String) {
+    fun cambiarCiudad(nuevaCiudad: String) {
         ciudad = nuevaCiudad
     }
 
