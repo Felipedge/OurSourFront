@@ -72,6 +72,8 @@ fun PagoScreen(pagoViewModel: PagoViewModel = viewModel()){
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
-        ){}
+        ){
+            Text(text = "Pagar")
+        }
     }
 }

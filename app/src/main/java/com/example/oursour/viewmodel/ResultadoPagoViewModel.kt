@@ -6,5 +6,5 @@ class ResultadoPagoViewModel: ViewModel(){
     // datos de prueba que ocuparemos mas adelante
     val estado = "APROBADO"
     val mensaje = "Tu pago fue aprobado"
-    val pedido = "Pedido N 1 "
+    val pedido = "Pedido N 1° "
 }

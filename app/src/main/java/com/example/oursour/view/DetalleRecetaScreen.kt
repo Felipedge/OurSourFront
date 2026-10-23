@@ -51,7 +51,7 @@ fun DetalleRecetaScreen(detalleRecetaViewModel: DetalleRecetaViewModel = viewMod
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
         ) {
-            Text("Volver a recetas")
+            Text(text = "Volver a recetas")
         }
     }
 }

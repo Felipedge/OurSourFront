@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 
 class PagoViewModel: ViewModel() {
     // datos de prueba
-    val pedido = "Pedido N 1"
+    val pedido = "Pedido N 1°"
     val monto = "Monto a pagar: $23980"
 
     var metodo by mutableStateOf("")

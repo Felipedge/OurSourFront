@@ -49,7 +49,7 @@ fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
         )
         Button(
             onClick = {
-                // Aquí irá la navegación a DespachoScreen
+                // Aquí va la navegación y  DespachoScreen
             },
             modifier = Modifier
                 .padding(top = 12.dp)
@@ -62,7 +62,7 @@ fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
 
         Button(
             onClick = {
-                //aqui ira la navegacion
+                //aqui va la navegacion
             },
             modifier = Modifier
                 .padding(top = 12.dp)
