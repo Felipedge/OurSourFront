@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.oursour.model.Producto
@@ -19,10 +20,12 @@ fun CatalogoScreen(
     busqueda: String,
     productos: List<Producto>,
     cantidadEnCarro: Int,
+    mensajeQr: String?,
     onBusquedaChange: (String) -> Unit,
     onProductoClick: (Long) -> Unit,
     onAgregarAlCarroClick: (Long) -> Unit,
     onCarroClick: () -> Unit,
+    onEscanearQrClick: () -> Unit,
     onVolver: () -> Unit,
     onReintentar: () -> Unit
 ) {
@@ -30,6 +33,9 @@ fun CatalogoScreen(
         titulo = "Productos",
         onVolver = onVolver,
         acciones = {
+            TextButton(onClick = onEscanearQrClick) {
+                Text("QR", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
+            }
             IconButton(onClick = onCarroClick) {
                 BadgedBox(badge = {
                     if (cantidadEnCarro > 0) Badge { Text(cantidadEnCarro.toString()) }
@@ -54,6 +60,13 @@ fun CatalogoScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             )
+            mensajeQr?.let {
+                Text(
+                    it,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                )
+            }
             ContenidoConEstado(PaddingValues(0.dp), cargando, error, onReintentar) {
                 if (productos.isEmpty()) {
                     EstadoVacio(
@@ -87,15 +100,14 @@ fun CatalogoScreenPreview() {
         CatalogoScreen(
             cargando = false, error = null, busqueda = "",
             productos = listOf(
-                Producto(1, "Pisco 35° Capel", "Pisco chileno, ideal para pisco sour. 750 ml.", 7990.0, 20, true),
-                Producto(2, "Ron blanco Mitjans", "Ron suave para mojitos y daiquiris. 750 ml.", 8990.0, 0, true),
-                Producto(3, "Vodka Absolut ", "Vodka neutro para cócteles y mezclas. 750 ml.", 9490.0, 10, true),
-                Producto(4, "Pulpa de Naranja", "Pulpa de naranja 100% natural. 750 ml.", 5690.0, 5, true),
-
+                Producto(1, "Pisco 35°", "Pisco chileno, ideal para pisco sour. 750 ml.", 7990.0, 120, true),
+                Producto(2, "Ron blanco", "Ron suave para mojitos y daiquiris. 750 ml.", 8990.0, 80, true),
+                Producto(4, "Vodka", "Vodka neutro para cócteles y mezclas. 750 ml.", 9490.0, 0, true)
             ),
             cantidadEnCarro = 2,
+            mensajeQr = null,
             onBusquedaChange = {}, onProductoClick = {}, onAgregarAlCarroClick = {},
-            onCarroClick = {}, onVolver = {}, onReintentar = {}
+            onCarroClick = {}, onEscanearQrClick = {}, onVolver = {}, onReintentar = {}
         )
     }
 }

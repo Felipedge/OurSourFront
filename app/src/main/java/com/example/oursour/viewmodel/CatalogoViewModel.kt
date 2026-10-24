@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.oursour.model.Producto
 import com.example.oursour.model.ProductoRepository
 import com.example.oursour.model.ProductoRepositoryLocal
+import com.example.oursour.model.leerCodigoProducto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,9 +17,10 @@ data class CatalogoUiState(
     val error: String? = null,
     val busqueda: String = "",
     val todos: List<Producto> = emptyList(),
-    val cantidadEnCarro: Int = 0
+    val cantidadEnCarro: Int = 0,
+    val mensajeQr: String? = null,
+    val idProductoQr: Long? = null
 ) {
-
     val productos: List<Producto>
         get() = if (busqueda.isBlank()) todos
         else todos.filter { it.nombreComercial.contains(busqueda.trim(), ignoreCase = true) }
@@ -34,7 +36,6 @@ class CatalogoViewModel(
     init {
         cargar()
     }
-
 
     fun cargar() {
         viewModelScope.launch {
@@ -52,8 +53,23 @@ class CatalogoViewModel(
     fun onBusquedaChange(valor: String) =
         _uiState.update { it.copy(busqueda = valor) }
 
-
-    //Estafunciin puede cambiar cuando andres haga su viewmodel del carrito
     fun onAgregarAlCarroClick(idProducto: Long) =
         _uiState.update { it.copy(cantidadEnCarro = it.cantidadEnCarro + 1) }
+
+    fun onQrLeido(texto: String?) {
+        if (texto == null) return
+        val idProducto = leerCodigoProducto(texto)
+        val producto = _uiState.value.todos.firstOrNull { it.idProducto == idProducto }
+        when {
+            idProducto == null ->
+                _uiState.update { it.copy(mensajeQr = "Este código QR no es de Our Sour") }
+            producto == null ->
+                _uiState.update { it.copy(mensajeQr = "Ese producto no está disponible") }
+            else ->
+                _uiState.update { it.copy(mensajeQr = null, idProductoQr = producto.idProducto) }
+        }
+    }
+
+    fun onQrNavegado() =
+        _uiState.update { it.copy(idProductoQr = null) }
 }
