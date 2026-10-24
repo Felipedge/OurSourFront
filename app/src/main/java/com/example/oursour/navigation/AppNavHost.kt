@@ -285,7 +285,84 @@ fun AppNavHost() {
         }
 
         // ==================== RECETAS Y COMPRA (Andrés) ====================
-        // Aquí se agregan las pantallas de Andrés cuando tengan sus parámetros on...
+        composable(Rutas.SELECCIONAR_INGREDIENTES) {
+            SeleccionarIngredientesScreen(
+                onVerRecetasClick = { navController.navigate(Rutas.RECETAS_RECOMENDADAS) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.INGREDIENTES_FRECUENTES) {
+            IngredienteFrecuenteScreen(
+                onVerRecetasClick = { navController.navigate(Rutas.RECETAS_RECOMENDADAS) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.RECETAS_RECOMENDADAS) {
+            RecetasRecomendadasScreen(
+                onVerDetalleClick = { navController.navigate(Rutas.DETALLE_RECETA) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.DETALLE_RECETA) {
+            DetalleRecetaScreen(onVolver = volver)
+        }
+
+        composable(Rutas.CARRITO) {
+            CarritoScreen(
+                onContinuarClick = { navController.navigate(Rutas.DESPACHO) },
+                onSeguirComprandoClick = {
+                    if (!navController.popBackStack(Rutas.CATALOGO, inclusive = false)) {
+                        navController.navigate(Rutas.CATALOGO)
+                    }
+                },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.DESPACHO) {
+            DespachoScreen(
+                onDireccionGuardada = { navController.navigate(Rutas.RESUMEN_COMPRA) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.RESUMEN_COMPRA) {
+            ResumenCompraScreen(
+                onIrAPagarClick = { navController.navigate(Rutas.PAGO) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.PAGO) {
+            PagoScreen(
+                onPagoRealizado = {
+                    navController.navigate(Rutas.RESULTADO_PAGO) {
+                        popUpTo(Rutas.CARRITO) { inclusive = true }
+                    }
+                },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.RESULTADO_PAGO) {
+            ResultadoPagoScreen(
+                onVolverAlInicioClick = { navController.popBackStack(Rutas.HOME, inclusive = false) }
+            )
+        }
+
+        composable(Rutas.MIS_PEDIDOS) {
+            MisPedidosScreen(
+                onVerDetalleClick = { navController.navigate(Rutas.DETALLE_PEDIDO) },
+                onVolver = volver
+            )
+        }
+
+        composable(Rutas.DETALLE_PEDIDO) {
+            DetallePedidoScreen(onVolver = volver)
+        }
     }
 }
 
