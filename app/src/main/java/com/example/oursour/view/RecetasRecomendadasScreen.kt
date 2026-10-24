@@ -1,67 +1,76 @@
 package com.example.oursour.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.RecetasRecomendadasViewModel
+
 @Composable
 fun RecetasRecomendadasScreen(
     onVerDetalleClick: () -> Unit,
     onVolver: () -> Unit,
     recetasRecomendadasViewModel: RecetasRecomendadasViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-
-    ){
-        //titulo
-        Text(
-            text = recetasRecomendadasViewModel.titulo,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-
-        )
-        //recetas recomendadas
-        Text(text = recetasRecomendadasViewModel.receta1)
-        Text(text = recetasRecomendadasViewModel.receta2)
-        Text(text = recetasRecomendadasViewModel.receta3)
-
-        // bottom para ver el datalle de la receta
-        Button(
-            onClick = onVerDetalleClick,
+    PantallaConBarra(titulo = "Recetas recomendadas", onVolver = onVolver) { padding ->
+        Column(
             modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Ver detalle de la receta")
+            if (recetasRecomendadasViewModel.recomendadas.isEmpty()) {
+                Text(
+                    text = "No hay recetas con los ingredientes elegidos",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            // aqui tenemos  Una tarjeta por receta recomendada
+            recetasRecomendadasViewModel.recomendadas.forEach { recomendada ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            recetasRecomendadasViewModel.elegirReceta(recomendada.receta.id)
+                            onVerDetalleClick()
+                        },
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text(
+                            text = recomendada.receta.titulo,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Coincidencia: ${recomendada.porcentaje}%",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        if (recomendada.faltantes.isNotEmpty()) {
+                            Text(
+                                text = "Te falta: " + recomendada.faltantes.joinToString { it.nombre },
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                }
+            }
         }
-        // bottom para volver
-        Button(
-            onClick = onVolver,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
-        ) { }
     }
 }

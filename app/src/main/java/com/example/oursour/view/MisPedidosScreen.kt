@@ -2,18 +2,17 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.MisPedidoViewModel
 
@@ -23,48 +22,38 @@ fun MisPedidosScreen(
     onVolver: () -> Unit,
     misPedidosViewModel: MisPedidoViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        // Título
-        Text(
-            text = misPedidosViewModel.titulo,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-        )
-
-        // Pedidos del usuario
-        Text(text = misPedidosViewModel.pedido1)
-        Text(text = misPedidosViewModel.pedido2)
-        Text(text = misPedidosViewModel.pedido3)
-
-        // Botón para ver el detalle
-        Button(
-            onClick = onVerDetalleClick,
+    PantallaConBarra(titulo = misPedidosViewModel.titulo, onVolver = onVolver) { padding ->
+        Column(
             modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Ver detalle del pedido")
-        }
+            //aqui tenemos los Pedidos del usuario
+            Text(
+                text = "${misPedidosViewModel.pedido1} - Total: ${formatearPesos(misPedidosViewModel.total1)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "${misPedidosViewModel.pedido2} - Total: ${formatearPesos(misPedidosViewModel.total2)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "${misPedidosViewModel.pedido3} - Total: ${formatearPesos(misPedidosViewModel.total3)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
 
-        // Botón para volver
-        Button(
-            onClick = onVolver,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
-        ) {
-            Text(text = "Volver")
+            //aqui tenemos los Botónes para ver el detalle
+            Button(
+                onClick = onVerDetalleClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Text(text = "Ver detalle del pedido")
+            }
         }
     }
 }

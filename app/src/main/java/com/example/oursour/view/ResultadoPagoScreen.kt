@@ -2,20 +2,17 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.ResultadoPagoViewModel
 
@@ -24,33 +21,28 @@ fun ResultadoPagoScreen(
     onVolverAlInicioClick: () -> Unit,
     resultadoPagoViewModel: ResultadoPagoViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = resultadoPagoViewModel.estado,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-        Text(text = resultadoPagoViewModel.mensaje, fontSize = 20.sp)
-        Text(text = resultadoPagoViewModel.pedido)
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        // Botón para volver al inicio
-        Button(
-            onClick = onVolverAlInicioClick,
+    PantallaConBarra(titulo = "Resultado del pago") { padding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text("Volver al inicio")
+            Text(text = resultadoPagoViewModel.estado, style = MaterialTheme.typography.headlineMedium)
+            Text(text = resultadoPagoViewModel.mensaje, style = MaterialTheme.typography.bodyLarge)
+            Text(text = resultadoPagoViewModel.pedido, style = MaterialTheme.typography.bodyMedium)
+
+            //aqui tenemos los Botónes para volver al inicio
+            Button(
+                onClick = onVolverAlInicioClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Text("Volver al inicio")
+            }
         }
     }
 }

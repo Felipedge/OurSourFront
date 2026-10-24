@@ -2,19 +2,17 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.ResumenCompraViewModel
 
@@ -24,55 +22,31 @@ fun ResumenCompraScreen(
     onVolver: () -> Unit,
     resumenCompraViewModel: ResumenCompraViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        // Título de la pantalla
-        Text(
-            text = "Resumen de compra",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-        )
-
-        // Datos del pedido que vienen del ViewModel
-        Text(text = resumenCompraViewModel.pedido)
-        Text(text = resumenCompraViewModel.subtotal, fontSize = 20.sp)
-        Text(text = resumenCompraViewModel.costoDespacho, fontSize = 20.sp)
-        Text(
-            text = resumenCompraViewModel.montoTotal,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        // Espacio entre los datos y los botones
-        Spacer(modifier = Modifier.height(15.dp))
-
-        // Botón para continuar al pago
-        Button(
-            onClick = onIrAPagarClick,
+    PantallaConBarra(titulo = "Resumen de compra", onVolver = onVolver) { padding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text("Ir a pagar")
-        }
+            //aqui tenemos los  Datos del pedido que vienen del ViewModel
+            Text(text = resumenCompraViewModel.pedido, style = MaterialTheme.typography.titleMedium)
 
-        // Botón para volver
-        Button(
-            onClick = onVolver,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
-        ) {
-            Text(text = "Volver")
+            Text(text = "Subtotal: ${formatearPesos(resumenCompraViewModel.subtotal)}", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Despacho: ${formatearPesos(resumenCompraViewModel.costoDespacho)}", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Total: ${formatearPesos(resumenCompraViewModel.montoTotal)}", style = MaterialTheme.typography.titleMedium)
+
+            //aqui tenemos los  Botónes para continuar al pago
+            Button(
+                onClick = onIrAPagarClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Text("Ir a pagar")
+            }
         }
     }
 }
