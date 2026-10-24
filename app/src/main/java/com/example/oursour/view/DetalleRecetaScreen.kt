@@ -2,18 +2,15 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.DetalleRecetaViewModel
 
@@ -22,36 +19,37 @@ fun DetalleRecetaScreen(
     onVolver: () -> Unit,
     detalleRecetaViewModel: DetalleRecetaViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        //aqui va el titulo de la receta
-        Text(
-            text = detalleRecetaViewModel.titulo,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-
-        )
-        // datos de la receta
-        Text(text = detalleRecetaViewModel.tipo, fontSize = 20.sp)
-        Text(text = detalleRecetaViewModel.ingredientes)
-        Text(text = detalleRecetaViewModel.pasos)
-
-        // aca es el espacio entre los datos y el bottom
-        Button(
-            onClick = onVolver,
+    PantallaConBarra(titulo = detalleRecetaViewModel.titulo, onVolver = onVolver) { padding ->
+        Column(
             modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Volver a recetas")
+            //aqui tenemos los  Tipo de receta
+            Etiqueta(texto = textoTipoReceta(detalleRecetaViewModel.tipo))
+
+            // aqui tenemos los  Ingredientes de la receta
+            TituloSeccion("Ingredientes")
+            detalleRecetaViewModel.ingredientes.forEach { ingrediente ->
+                Text(text = "• " + ingrediente.nombre, style = MaterialTheme.typography.bodyLarge)
+            }
+
+            // aqui tenemos los  Ingredientes que faltan
+            TituloSeccion("Te faltan")
+            if (detalleRecetaViewModel.faltantes.isEmpty()) {
+                Text(text = "Tienes todos los ingredientes", style = MaterialTheme.typography.bodyLarge)
+            } else {
+                detalleRecetaViewModel.faltantes.forEach { faltante ->
+                    Text(text = "• " + faltante.nombre, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+
+            //aqui tenemos los  Pasos de preparación
+            TituloSeccion("Preparación")
+            Text(text = detalleRecetaViewModel.pasos, style = MaterialTheme.typography.bodyLarge)
         }
     }
 }

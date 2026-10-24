@@ -1,21 +1,19 @@
 package com.example.oursour.view
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.CarritoViewModel
 
@@ -26,65 +24,42 @@ fun CarritoScreen(
     onVolver: () -> Unit,
     carritoViewModel: CarritoViewModel = viewModel()
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        // aqui va el titulo
-        Text(
-            text = carritoViewModel.titulo,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-
-        )
-        //productos del carrito
-        Text(text = carritoViewModel.producto1)
-        Text(text = carritoViewModel.producto2)
-        Text(text = carritoViewModel.producto3)
-
-        Text(
-            text = carritoViewModel.resumen,
-            fontSize = 20.sp,
-            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-
-        )
-        // bottom para continuar
-        Button(
-            onClick = onContinuarClick,
+    PantallaConBarra(titulo = carritoViewModel.titulo, onVolver = onVolver) { padding ->
+        Column(
             modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Continuar a despacho")
-        }
-// bottom para seguir comprando
-        Button(
-            onClick = onSeguirComprandoClick,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
-        ) {
-            Text(text = "Seguir comprando")
-        }
+            //aqui tenemos el SProductos del carrito
+            Text(text = carritoViewModel.producto1, style = MaterialTheme.typography.bodyLarge)
+            Text(text = carritoViewModel.producto2, style = MaterialTheme.typography.bodyLarge)
+            Text(text = carritoViewModel.producto3, style = MaterialTheme.typography.bodyLarge)
 
-        //bottom para volver
-        Button(
-            onClick = onVolver,
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(5.dp)
-        ) {
-            Text(text = "Volver")
+            // Cantidad de productos
+            Text(text = carritoViewModel.resumen, style = MaterialTheme.typography.titleMedium)
+
+            //aqui tenemos el  Botón principal
+            Button(
+                onClick = onContinuarClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text("Continuar a despacho")
+            }
+
+            // aqui tenemos el  Botón secundario
+            OutlinedButton(
+                onClick = onSeguirComprandoClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Text("Seguir comprando")
+            }
         }
     }
 }
