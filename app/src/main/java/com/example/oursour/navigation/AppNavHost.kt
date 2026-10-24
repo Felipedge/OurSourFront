@@ -1,5 +1,6 @@
 package com.example.oursour.navigation
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,6 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.oursour.view.*
 import com.example.oursour.viewmodel.*
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 @Composable
 fun AppNavHost() {
@@ -120,16 +123,28 @@ fun AppNavHost() {
             val vm: CatalogoViewModel = viewModel()
             val estado by vm.uiState.collectAsStateWithLifecycle()
 
+            val lectorQr = rememberLauncherForActivityResult(ScanContract()) { resultado ->
+                vm.onQrLeido(resultado.contents)
+            }
+
+            LaunchedEffect(estado.idProductoQr) {
+                val id = estado.idProductoQr ?: return@LaunchedEffect
+                navController.navigate(Rutas.detalleProducto(id))
+                vm.onQrNavegado()
+            }
+
             CatalogoScreen(
                 cargando = estado.cargando,
                 error = estado.error,
                 busqueda = estado.busqueda,
                 productos = estado.productos,
                 cantidadEnCarro = estado.cantidadEnCarro,
+                mensajeQr = estado.mensajeQr,
                 onBusquedaChange = { vm.onBusquedaChange(it) },
                 onProductoClick = { id -> navController.navigate(Rutas.detalleProducto(id)) },
                 onAgregarAlCarroClick = { id -> vm.onAgregarAlCarroClick(id) },
                 onCarroClick = { navController.navigate(Rutas.CARRITO) },
+                onEscanearQrClick = { lectorQr.launch(opcionesQr()) },
                 onVolver = volver,
                 onReintentar = { vm.cargar() }
             )
@@ -270,88 +285,7 @@ fun AppNavHost() {
         }
 
         // ==================== RECETAS Y COMPRA (Andrés) ====================
-        // Descomentar (quitar /* y */) cuando Andrés agregue los parámetros on... a sus pantallas
-
-        /*
-        composable(Rutas.SELECCIONAR_INGREDIENTES) {
-            SeleccionarIngredientesScreen(
-                onVerRecetasClick = { navController.navigate(Rutas.RECETAS_RECOMENDADAS) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.INGREDIENTES_FRECUENTES) {
-            IngredienteFrecuenteScreen(
-                onVerRecetasClick = { navController.navigate(Rutas.RECETAS_RECOMENDADAS) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.RECETAS_RECOMENDADAS) {
-            RecetasRecomendadasScreen(
-                onVerDetalleClick = { navController.navigate(Rutas.DETALLE_RECETA) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.DETALLE_RECETA) {
-            DetalleRecetaScreen(onVolver = volver)
-        }
-
-        composable(Rutas.CARRITO) {
-            CarritoScreen(
-                onContinuarClick = { navController.navigate(Rutas.DESPACHO) },
-                onSeguirComprandoClick = {
-                    if (!navController.popBackStack(Rutas.CATALOGO, inclusive = false)) {
-                        navController.navigate(Rutas.CATALOGO)
-                    }
-                },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.DESPACHO) {
-            DespachoScreen(
-                onDireccionGuardada = { navController.navigate(Rutas.RESUMEN_COMPRA) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.RESUMEN_COMPRA) {
-            ResumenCompraScreen(
-                onIrAPagarClick = { navController.navigate(Rutas.PAGO) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.PAGO) {
-            PagoScreen(
-                onPagoRealizado = {
-                    navController.navigate(Rutas.RESULTADO_PAGO) {
-                        popUpTo(Rutas.CARRITO) { inclusive = true }
-                    }
-                },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.RESULTADO_PAGO) {
-            ResultadoPagoScreen(
-                onVolverAlInicioClick = { navController.popBackStack(Rutas.HOME, inclusive = false) }
-            )
-        }
-
-        composable(Rutas.MIS_PEDIDOS) {
-            MisPedidosScreen(
-                onVerDetalleClick = { navController.navigate(Rutas.DETALLE_PEDIDO) },
-                onVolver = volver
-            )
-        }
-
-        composable(Rutas.DETALLE_PEDIDO) {
-            DetallePedidoScreen(onVolver = volver)
-        }
-        */
+        // Aquí se agregan las pantallas de Andrés cuando tengan sus parámetros on...
     }
 }
 
@@ -359,4 +293,11 @@ private fun irAlLogin(navController: NavHostController) {
     navController.navigate(Rutas.LOGIN) {
         popUpTo(navController.graph.id) { inclusive = true }
     }
+}
+
+private fun opcionesQr() = ScanOptions().apply {
+    setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+    setPrompt("Apunta al código QR de la botella")
+    setBeepEnabled(false)
+    setOrientationLocked(false)
 }
