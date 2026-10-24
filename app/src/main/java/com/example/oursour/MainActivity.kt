@@ -19,6 +19,7 @@ import com.example.oursour.view.IngredienteFrecuenteScreen
 import com.example.oursour.view.LoginScreen
 import com.example.oursour.view.MisPedidosScreen
 import com.example.oursour.view.PagoScreen
+import com.example.oursour.view.RecetasRecomendadasScreen
 import com.example.oursour.view.ResultadoPagoScreen
 import com.example.oursour.view.ResumenCompraScreen
 
@@ -28,7 +29,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             OurSourTheme {
-                IngredienteFrecuenteScreen()
+                RecetasRecomendadasScreen()
+                //IngredienteFrecuenteScreen()
                 //MisPedidosScreen()
                 //DetalleRecetaScreen()
                 //DellePedidoScreen()
