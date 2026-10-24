@@ -18,7 +18,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.DetalleRecetaViewModel
 
 @Composable
-fun DetalleRecetaScreen(detalleRecetaViewModel: DetalleRecetaViewModel = viewModel()){
+fun DetalleRecetaScreen(
+    onVolver: () -> Unit,
+    detalleRecetaViewModel: DetalleRecetaViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -41,12 +44,9 @@ fun DetalleRecetaScreen(detalleRecetaViewModel: DetalleRecetaViewModel = viewMod
 
         // aca es el espacio entre los datos y el bottom
         Button(
-            onClick = {
-
-                // aqui va la navegacion mi bro
-
-            },
+            onClick = onVolver,
             modifier = Modifier
+                .padding(top = 12.dp)
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)

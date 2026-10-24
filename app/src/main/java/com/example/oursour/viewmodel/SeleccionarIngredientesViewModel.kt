@@ -7,6 +7,6 @@ class SeleccionarIngredientesViewModel: ViewModel(){
     val titulo = "Seleciona tus ingredientes"
     val ingrediente1  = "Pisco 35°"
     val ingrediente2  = "Jugo de limon"
-    val ingredientes3 = "Azucar"
+    val ingrediente3 = "Azucar"
     val ingrediente4  = "Clara de huevo"
 }

@@ -20,14 +20,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.util.TableInfo
 import com.example.oursour.viewmodel.IngredienteFrecuenteViewModel
 
+
 @Composable
-fun IngredienteFrecuenteScreen(ingredienteFrecuenteViewModel: IngredienteFrecuenteViewModel = viewModel()){
+fun IngredienteFrecuenteScreen(
+    onVerRecetasClick: () -> Unit,
+    onVolver: () -> Unit,
+    ingredienteFrecuenteViewModel: IngredienteFrecuenteViewModel = viewModel()
+) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+horizontalAlignment = Alignment.CenterHorizontally,
+verticalArrangement = Arrangement.Center,
+modifier = Modifier
+.fillMaxWidth()
+.padding(16.dp)
     ) {
         // titulo
         Text(
@@ -44,33 +49,28 @@ fun IngredienteFrecuenteScreen(ingredienteFrecuenteViewModel: IngredienteFrecuen
 
         // ahora vamos con el botton
         Button(
-            onClick = {
-                // aqui va la navegacion
-            },
+            onClick = onVerRecetasClick,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
-
         ) {
             Text(text = "Ver recetas")
         }
         //bottom para volver
         Button(
-            onClick = {
-                //aqui va la navegacion
-            },
+            onClick = onVolver,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
-
         ) {
             Text(text = "Volver")
         }
     }
 
-
 }
+
+

@@ -16,9 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.RecetasRecomendadasViewModel
-
 @Composable
-fun RecetasRecomendadasScreen(recetasRecomendadasViewModel: RecetasRecomendadasViewModel = viewModel()){
+fun RecetasRecomendadasScreen(
+    onVerDetalleClick: () -> Unit,
+    onVolver: () -> Unit,
+    recetasRecomendadasViewModel: RecetasRecomendadasViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -42,9 +45,7 @@ fun RecetasRecomendadasScreen(recetasRecomendadasViewModel: RecetasRecomendadasV
 
         // bottom para ver el datalle de la receta
         Button(
-            onClick = {
-                //aqui va la navegacion
-            },
+            onClick = onVerDetalleClick,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -53,5 +54,14 @@ fun RecetasRecomendadasScreen(recetasRecomendadasViewModel: RecetasRecomendadasV
         ) {
             Text(text = "Ver detalle de la receta")
         }
+        // bottom para volver
+        Button(
+            onClick = onVolver,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(5.dp)
+        ) { }
     }
 }

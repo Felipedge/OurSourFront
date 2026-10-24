@@ -18,7 +18,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.SeleccionarIngredientesViewModel
 
 @Composable
-fun SeleccionarIngredientesViewModel(seleccionarIngredientesViewModel: SeleccionarIngredientesViewModel = viewModel()){
+fun SeleccionarIngredientesScreen(
+    onVerRecetasClick: () -> Unit,
+    onVolver: () -> Unit,
+    seleccionarIngredientesViewModel: SeleccionarIngredientesViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -26,25 +30,23 @@ fun SeleccionarIngredientesViewModel(seleccionarIngredientesViewModel: Seleccion
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        //titulo
+        // Título
         Text(
-            text = seleccionarIngredientesViewModel .titulo,
+            text = seleccionarIngredientesViewModel.titulo,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
         )
-        //ingredientes disponibles
+
+        // Ingredientes disponibles
         Text(text = seleccionarIngredientesViewModel.ingrediente1)
         Text(text = seleccionarIngredientesViewModel.ingrediente2)
-        Text(text = seleccionarIngredientesViewModel.ingredientes3)
+        Text(text = seleccionarIngredientesViewModel.ingrediente3)
         Text(text = seleccionarIngredientesViewModel.ingrediente4)
-
 
         // Botón para ver las recetas
         Button(
-            onClick = {
-                // Aquí irá la vegacion
-            },
+            onClick = onVerRecetasClick,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -53,10 +55,10 @@ fun SeleccionarIngredientesViewModel(seleccionarIngredientesViewModel: Seleccion
         ) {
             Text(text = "Ver recetas")
         }
+
+        // Botón para volver
         Button(
-            onClick = {
-                //aqui va la navegacion
-            },
+            onClick = onVolver,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -65,6 +67,5 @@ fun SeleccionarIngredientesViewModel(seleccionarIngredientesViewModel: Seleccion
         ) {
             Text(text = "Volver")
         }
-
     }
 }
