@@ -33,6 +33,14 @@ fun ResumenCompraScreen(
             //aqui tenemos los  Datos del pedido que vienen del ViewModel
             Text(text = resumenCompraViewModel.pedido, style = MaterialTheme.typography.titleMedium)
 
+            // Productos del carro
+            resumenCompraViewModel.items.forEach { item ->
+                Text(
+                    text = "${item.producto.nombreComercial} x${item.cantidad} - ${formatearPesos(item.producto.precioUnitario * item.cantidad)}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
             Text(text = "Subtotal: ${formatearPesos(resumenCompraViewModel.subtotal)}", style = MaterialTheme.typography.bodyMedium)
             Text(text = "Despacho: ${formatearPesos(resumenCompraViewModel.costoDespacho)}", style = MaterialTheme.typography.bodyMedium)
             Text(text = "Total: ${formatearPesos(resumenCompraViewModel.montoTotal)}", style = MaterialTheme.typography.titleMedium)

@@ -18,24 +18,33 @@ data class RecetaRecomendada(
 
 object RecetaRepositoryLocal {
     val ingredientes = listOf(
-        Ingrediente(1, "Pisco", "DESTILADO"), Ingrediente(2, "Limón", "FRUTA"),
-        Ingrediente(3, "Azúcar", "OTRO"), Ingrediente(4, "Clara de huevo", "OTRO"),
-        Ingrediente(5, "Ron blanco", "DESTILADO"), Ingrediente(6, "Menta", "OTRO"),
-        Ingrediente(7, "Soda", "MIXER"), Ingrediente(8, "Gin", "DESTILADO"),
-        Ingrediente(9, "Agua tónica", "MIXER"), Ingrediente(10, "Jugo de naranja", "JUGO")
+        // los 10 productos del catálogo (mismos nombres e ids)
+        Ingrediente(1, "Pisco 35°", "DESTILADO"), Ingrediente(2, "Ron blanco", "DESTILADO"),
+        Ingrediente(3, "Ron dorado", "DESTILADO"), Ingrediente(4, "Vodka", "DESTILADO"),
+        Ingrediente(5, "Gin", "DESTILADO"), Ingrediente(6, "Tequila blanco", "DESTILADO"),
+        Ingrediente(7, "Whisky", "DESTILADO"), Ingrediente(8, "Licor de naranja", "LICOR"),
+        Ingrediente(9, "Vermut rojo", "LICOR"), Ingrediente(10, "Licor de café", "LICOR"),
+        // ingredientes que no se venden en el catálogo
+        Ingrediente(11, "Limón", "FRUTA"), Ingrediente(12, "Azúcar", "OTRO"),
+        Ingrediente(13, "Clara de huevo", "OTRO"), Ingrediente(14, "Menta", "OTRO"),
+        Ingrediente(15, "Soda", "MIXER"), Ingrediente(16, "Agua tónica", "MIXER"),
+        Ingrediente(17, "Jugo de naranja", "JUGO")
     )
 
     val recetas = listOf(
-        Receta(1, "Pisco Sour", "COCTEL", "Batir pisco, limón, azúcar y clara con hielo.", listOf(1, 2, 3, 4)),
-        Receta(2, "Mojito", "COCTEL", "Machacar menta con azúcar y limón, agregar ron y soda.", listOf(5, 6, 3, 2, 7)),
-        Receta(3, "Gin Tonic", "COCTEL", "Gin con hielo y agua tónica.", listOf(8, 9)),
-        Receta(4, "Limonada", "MOCKTAIL", "Limón, azúcar y agua con hielo.", listOf(2, 3)),
-        Receta(5, "Gin Sour", "COCTEL", "Batir gin, limón, azúcar y clara.", listOf(8, 2, 3, 4)),
-        Receta(6, "Naranja Soda", "MOCKTAIL", "Jugo de naranja con soda y hielo.", listOf(10, 7))
+        Receta(1, "Pisco Sour", "COCTEL", "Batir pisco, limón, azúcar y clara con hielo.", listOf(1, 11, 12, 13)),
+        Receta(2, "Mojito", "COCTEL", "Machacar menta con azúcar y limón, agregar ron y soda.", listOf(2, 14, 12, 11, 15)),
+        Receta(3, "Gin Tonic", "COCTEL", "Gin con hielo y agua tónica.", listOf(5, 16)),
+        Receta(4, "Limonada", "MOCKTAIL", "Limón, azúcar y agua con hielo.", listOf(11, 12)),
+        Receta(5, "Gin Sour", "COCTEL", "Batir gin, limón, azúcar y clara.", listOf(5, 11, 12, 13)),
+        Receta(6, "Naranja Soda", "MOCKTAIL", "Jugo de naranja con soda y hielo.", listOf(17, 15))
     )
 
     var seleccionActual: Set<Long> = emptySet()   // la guarda SeleccionarIngredientes
-    var recetaElegida: Long? = null               // la guarda RecetasRecomendadas
+    var recetaElegida: Long? = null //aqui tenemos que  guarda RecetasRecomendadas
+
+    var frecuentes: Set<Long> = emptySet()
+
 
     fun recomendar(): List<RecetaRecomendada> =
         recetas.map { r ->

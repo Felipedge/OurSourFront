@@ -29,7 +29,11 @@ fun ResultadoPagoScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = resultadoPagoViewModel.estado, style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = resultadoPagoViewModel.estado,
+                style = MaterialTheme.typography.headlineMedium,
+                color = if (resultadoPagoViewModel.esError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onBackground
+            )
             Text(text = resultadoPagoViewModel.mensaje, style = MaterialTheme.typography.bodyLarge)
             Text(text = resultadoPagoViewModel.pedido, style = MaterialTheme.typography.bodyMedium)
 

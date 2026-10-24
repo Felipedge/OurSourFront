@@ -1,13 +1,21 @@
 package com.example.oursour.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.oursour.model.ItemCarro
+import com.example.oursour.model.PedidoLocal
+import com.example.oursour.model.PedidosLocal
 
 class DetallePedidoViewModel : ViewModel(){
-    // aqui van los datos fijos de la prueba que tendremos mas adelante
-    val pedido = "Pedido N 1°"
-    val estado = "Estado: EN_PREPARACION"
-    val direccion = "Direccion: Lord crochrane 184, santiago centro"
-    val subtotal = 19990
-    val costoDespacho = 3990
-    val montoTotal = 23980
+    // el pedido que se eligió en Mis pedidos
+    private val elegido: PedidoLocal? =
+        PedidosLocal.pedidos.firstOrNull { it.numero == PedidosLocal.numeroElegido }
+
+    val pedido: String =
+        if (elegido == null) "Pedido no encontrado" else "Pedido N ${elegido.numero}°"
+    val estado: String = elegido?.estado ?: ""
+    val direccion: String = elegido?.direccion ?: ""
+    val items: List<ItemCarro> = elegido?.items ?: listOf()
+    val subtotal: Double = elegido?.subtotal ?: 0.0
+    val costoDespacho: Double = elegido?.costoDespacho ?: 0.0
+    val montoTotal: Double = elegido?.total ?: 0.0
 }

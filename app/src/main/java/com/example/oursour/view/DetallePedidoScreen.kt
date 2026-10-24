@@ -30,8 +30,23 @@ fun DetallePedidoScreen(
         ) {
             // Datos del pedido que vienen del ViewModel
             Text(text = detallePedidoViewModel.pedido, style = MaterialTheme.typography.titleMedium)
-            Text(text = detallePedidoViewModel.estado, style = MaterialTheme.typography.bodyLarge)
-            Text(text = detallePedidoViewModel.direccion, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "Estado: ${textoEstadoPedido(detallePedidoViewModel.estado)}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "Direccion: ${detallePedidoViewModel.direccion}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            // Productos del pedido
+            detallePedidoViewModel.items.forEach { item ->
+                Text(
+                    text = "${item.producto.nombreComercial} x${item.cantidad} - ${formatearPesos(item.producto.precioUnitario * item.cantidad)}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
             Text(
                 text = "Subtotal: ${formatearPesos(detallePedidoViewModel.subtotal)}",
                 style = MaterialTheme.typography.bodyLarge

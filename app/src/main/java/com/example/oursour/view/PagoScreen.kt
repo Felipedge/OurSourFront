@@ -2,16 +2,20 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,7 +32,8 @@ fun PagoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = pagoViewModel.pedido, style = MaterialTheme.typography.titleMedium)
@@ -37,13 +42,34 @@ fun PagoScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            // aqui tenemos  Caja de texto del
-            OutlinedTextField(
-                value = pagoViewModel.metodo,
-                onValueChange = { pagoViewModel.cambiarMetodo(it) },
-                label = { Text("metodo de pago") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            // aqui tenemos la  lista de métodos de pago
+            TituloSeccion("Método de pago")
+            pagoViewModel.opciones.forEach { opcion ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = pagoViewModel.metodo == opcion,
+                        onClick = { pagoViewModel.cambiarMetodo(opcion) }
+                    )
+                    Text(text = opcion, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+
+            // aqui tenemos las  cuotas, solo si eligió tarjeta de crédito
+            if (pagoViewModel.esCredito) {
+                TituloSeccion("Cuotas")
+                pagoViewModel.cuotasDisponibles.forEach { n ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = pagoViewModel.cuotas == n,
+                            onClick = { pagoViewModel.cambiarCuotas(n) }
+                        )
+                        Text(
+                            text = "${n}x de ${formatearPesos(pagoViewModel.monto / n)}",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
 
             //aqui tenemos los  Mensajes de error
             if (pagoViewModel.textoVisible) {
@@ -60,6 +86,7 @@ fun PagoScreen(
                     pagoViewModel.textoVisible = false
                     val validador = pagoViewModel.pagar()
                     if (validador) {
+                        pagoViewModel.confirmarPago()
                         onPagoRealizado()
                     } else {
                         pagoViewModel.textoVisible = true

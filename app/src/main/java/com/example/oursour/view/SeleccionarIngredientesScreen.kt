@@ -28,7 +28,27 @@ fun SeleccionarIngredientesScreen(
     onVolver: () -> Unit,
     seleccionarIngredientesViewModel: SeleccionarIngredientesViewModel = viewModel()
 ) {
-    PantallaConBarra(titulo = "Selecciona ingredientes", onVolver = onVolver) { padding ->
+    PantallaConBarra(
+        titulo = "Selecciona ingredientes",
+        onVolver = onVolver,
+        // aqui tenemos el botón fijo abajo, siempre visible
+        barraInferior = {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Button(
+                    onClick = {
+                        seleccionarIngredientesViewModel.guardarSeleccion()
+                        onVerRecetasClick()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(5.dp)
+                ) {
+                    Text("Ver recetas")
+                }
+            }
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -42,28 +62,18 @@ fun SeleccionarIngredientesScreen(
                 style = MaterialTheme.typography.titleMedium
             )
 
-            // aqui tenemos  Un ingrediente por fila, con su respectiva  casilla
-            RecetaRepositoryLocal.ingredientes.forEach { ingrediente ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(
-                        checked = ingrediente.id in seleccionarIngredientesViewModel.seleccionados,
-                        onCheckedChange = { seleccionarIngredientesViewModel.alternar(ingrediente.id) }
-                    )
-                    Text(text = ingrediente.nombre)
+            // aqui tenemos  Los ingredientes agrupados por categoría, uno por fila con su casilla
+            RecetaRepositoryLocal.ingredientes.groupBy { it.categoria }.forEach { (categoria, lista) ->
+                TituloSeccion(textoCategoria(categoria))
+                lista.forEach { ingrediente ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = ingrediente.id in seleccionarIngredientesViewModel.seleccionados,
+                            onCheckedChange = { seleccionarIngredientesViewModel.alternar(ingrediente.id) }
+                        )
+                        Text(text = ingrediente.nombre)
+                    }
                 }
-            }
-
-            Button(
-                onClick = {
-                    seleccionarIngredientesViewModel.guardarSeleccion()
-                    onVerRecetasClick()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(5.dp)
-            ) {
-                Text("Ver recetas")
             }
         }
     }

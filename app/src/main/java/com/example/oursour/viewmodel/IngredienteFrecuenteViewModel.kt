@@ -1,11 +1,25 @@
 package com.example.oursour.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.oursour.model.RecetaRepositoryLocal
 
 class IngredienteFrecuenteViewModel: ViewModel(){
-    // datos fijos de prueba para mas adelante
     val titulo = "Ingredientes frecuentes"
-    val ingrediente1 = "Pisco 35° - Usado 5 veces"
-    val ingrediente2 = "Jugo de limon - Usado  4 veces"
-    val ingrediente3 = "Azucar - usado 3 veces"
+
+    // aqui tenemos el id de los ingredientes frecuentes que marcamos
+    var frecuentes by mutableStateOf(RecetaRepositoryLocal.frecuentes)
+
+    // aqui tenemos que  marca o desmarca un ingrediente frecuente y lo guarda
+    fun alternar(id: Long) {
+        frecuentes = if (id in frecuentes) frecuentes - id else frecuentes + id
+        RecetaRepositoryLocal.frecuentes = frecuentes
+    }
+
+    // aqui usamos los frecuentes como la selección para RecetasRecomendadas
+    fun guardarSeleccion() {
+        RecetaRepositoryLocal.seleccionActual = frecuentes
+    }
 }

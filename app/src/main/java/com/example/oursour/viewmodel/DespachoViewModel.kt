@@ -4,6 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.oursour.model.CarroLocal
+import com.example.oursour.model.PedidosLocal
 import com.example.oursour.model.Referencia
 
 class DespachoViewModel: ViewModel() {
@@ -13,6 +15,9 @@ class DespachoViewModel: ViewModel() {
     var ciudad by mutableStateOf("")
     var referencia by mutableStateOf("")
     var textoVisible by mutableStateOf(false)
+
+    val costoDespacho: Double
+        get() = CarroLocal.costoDespacho
 
     fun cambiarCalle(nuevaCalle: String) {
         calle = nuevaCalle
@@ -49,6 +54,9 @@ class DespachoViewModel: ViewModel() {
         }
         if (ciudad == "") {
             validador = false
+        }
+        if (validador) {
+            PedidosLocal.direccionActual = "$calle $numero, $comuna, $ciudad"
         }
         return validador
     }

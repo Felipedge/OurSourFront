@@ -1,7 +1,15 @@
 package com.example.oursour.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.oursour.model.CarroLocal
+import com.example.oursour.model.Ingrediente
+import com.example.oursour.model.ProductoRepositoryLocal
 import com.example.oursour.model.RecetaRepositoryLocal
+import kotlinx.coroutines.launch
 
 class DetalleRecetaViewModel : ViewModel() {
     //aqui tenemos la  receta que se eligió en RecetasRecomendadas (puede no existir)
@@ -19,4 +27,28 @@ class DetalleRecetaViewModel : ViewModel() {
 
     // aqui tenemos  los que el usuario no marcó
     val faltantes = ingredientes.filter { it.id !in RecetaRepositoryLocal.seleccionActual }
+
+    //aqui tenemos un  mensaje que se muestra después de agregar un producto al carro
+    var mensaje by mutableStateOf("")
+
+    //aqui tenemos lo que  busca en el catálogo un producto con el nombre del ingrediente y lo agrega al carro
+    fun agregarAlCarro(ingrediente: Ingrediente) {
+        viewModelScope.launch {
+            ProductoRepositoryLocal.listar()
+                .onSuccess { lista ->
+                    val producto = lista.firstOrNull {
+                        it.nombreComercial.contains(ingrediente.nombre, ignoreCase = true) && it.hayStock
+                    }
+                    if (producto == null) {
+                        mensaje = "No hay producto disponible para " + ingrediente.nombre
+                    } else {
+                        CarroLocal.agregar(producto)
+                        mensaje = producto.nombreComercial + " agregado al carro"
+                    }
+                }
+                .onFailure {
+                    mensaje = "No se pudo cargar el catalogo"
+                }
+        }
+    }
 }
