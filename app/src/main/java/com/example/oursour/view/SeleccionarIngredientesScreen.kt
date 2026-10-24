@@ -11,37 +11,48 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.oursour.viewmodel.RecetasRecomendadasViewModel
+import com.example.oursour.viewmodel.SeleccionarIngredientesViewModel
 
 @Composable
-fun RecetasRecomendadasScreen(recetasRecomendadasViewModel: RecetasRecomendadasViewModel = viewModel()){
+fun SeleccionarIngredientesViewModel(seleccionarIngredientesViewModel: SeleccionarIngredientesViewModel = viewModel()){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-
-    ){
+    ) {
         //titulo
         Text(
-            text = recetasRecomendadasViewModel.titulo,
+            text = seleccionarIngredientesViewModel .titulo,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
-
         )
-        //recetas recomendadas
-        Text(text = recetasRecomendadasViewModel.receta1)
-        Text(text = recetasRecomendadasViewModel.receta2)
-        Text(text = recetasRecomendadasViewModel.receta3)
+        //ingredientes disponibles
+        Text(text = seleccionarIngredientesViewModel.ingrediente1)
+        Text(text = seleccionarIngredientesViewModel.ingrediente2)
+        Text(text = seleccionarIngredientesViewModel.ingredientes3)
+        Text(text = seleccionarIngredientesViewModel.ingrediente4)
 
-        // bottom para ver el datalle de la receta
+
+        // Botón para ver las recetas
+        Button(
+            onClick = {
+                // Aquí irá la vegacion
+            },
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(5.dp)
+        ) {
+            Text(text = "Ver recetas")
+        }
         Button(
             onClick = {
                 //aqui va la navegacion
@@ -52,7 +63,8 @@ fun RecetasRecomendadasScreen(recetasRecomendadasViewModel: RecetasRecomendadasV
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
         ) {
-            Text(text = "Ver detalle de la receta")
+            Text(text = "Volver")
         }
+
     }
 }

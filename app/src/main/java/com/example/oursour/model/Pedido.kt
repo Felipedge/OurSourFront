@@ -18,9 +18,9 @@ data class CarritoProducto(
 
 data class Carrito(
     val idCarrito: Long,
-    val idProducto: Long,
-    val cantidad: Int,
-    val precioUnitario: Double
+    val idUsuario: Long,
+    val fechaCreacion: String,
+    val productos:  List<CarritoProducto>
 )
 
 data class Pedido(
@@ -28,8 +28,8 @@ data class Pedido(
     val idUsuario: Long,
     val idDireccion: Long,
     val subtotal: Double,
-    val contoDespacho: Double,
-    val montoTOtal: Double,
+    val costoDespacho: Double,
+    val montoTotal: Double,
     val estado : String,
     val fechaCreacion: String,
     val productos : List<PedidoProducto>

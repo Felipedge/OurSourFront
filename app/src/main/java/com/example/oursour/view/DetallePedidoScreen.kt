@@ -39,7 +39,7 @@ fun DellePedidoScreen(detallePedidoViewModel: DetallePedidoViewModel = viewModel
         Text(text = detallePedidoViewModel.pedido, fontSize = 20.sp)
         Text(text = detallePedidoViewModel.estado)
         Text(text = detallePedidoViewModel.direccion)
-        Text(text = detallePedidoViewModel.subtoTal)
+        Text(text = detallePedidoViewModel.subtotal)
         Text(text = detallePedidoViewModel.costoDespacho)
         Text(
             text = detallePedidoViewModel.montoTotal,
