@@ -20,7 +20,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.ResultadoPagoViewModel
 
 @Composable
-fun ResultadoPagoScreen(resultadoPagoViewModel: ResultadoPagoViewModel = viewModel()) {
+fun ResultadoPagoScreen(
+    onVolverAlInicioClick: () -> Unit,
+    resultadoPagoViewModel: ResultadoPagoViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -39,10 +42,9 @@ fun ResultadoPagoScreen(resultadoPagoViewModel: ResultadoPagoViewModel = viewMod
 
         Spacer(modifier = Modifier.height(15.dp))
 
+        // Botón para volver al inicio
         Button(
-            onClick = {
-                // Aquí irá la navegación de vuelta al inicio
-            },
+            onClick = onVolverAlInicioClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

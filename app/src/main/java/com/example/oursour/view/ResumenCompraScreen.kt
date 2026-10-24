@@ -19,8 +19,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.ResumenCompraViewModel
 
 @Composable
-fun ResumenCompraScreen(resumenCompraViewModel: ResumenCompraViewModel = viewModel()){
-    //aqui va el column
+fun ResumenCompraScreen(
+    onIrAPagarClick: () -> Unit,
+    onVolver: () -> Unit,
+    resumenCompraViewModel: ResumenCompraViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -28,14 +31,15 @@ fun ResumenCompraScreen(resumenCompraViewModel: ResumenCompraViewModel = viewMod
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // aqui va el titulo de la pantalla
+        // Título de la pantalla
         Text(
             text = "Resumen de compra",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 60.dp,bottom = 12.dp)
+            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
         )
-        // datos de pedido que vienen de viewmodel
+
+        // Datos del pedido que vienen del ViewModel
         Text(text = resumenCompraViewModel.pedido)
         Text(text = resumenCompraViewModel.subtotal, fontSize = 20.sp)
         Text(text = resumenCompraViewModel.costoDespacho, fontSize = 20.sp)
@@ -44,21 +48,31 @@ fun ResumenCompraScreen(resumenCompraViewModel: ResumenCompraViewModel = viewMod
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        // aca va el espacio entre los datos y el botton
+
+        // Espacio entre los datos y los botones
         Spacer(modifier = Modifier.height(15.dp))
 
-        // bottoo para continuar al pago
+        // Botón para continuar al pago
         Button(
-            onClick = {
-                // aqui ira la navegacion
-            },
+            onClick = onIrAPagarClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
         ) {
             Text("Ir a pagar")
+        }
 
+        // Botón para volver
+        Button(
+            onClick = onVolver,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(5.dp)
+        ) {
+            Text(text = "Volver")
         }
     }
 }

@@ -20,7 +20,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.CarritoViewModel
 
 @Composable
-fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
+fun CarritoScreen(
+    onContinuarClick: () -> Unit,
+    onSeguirComprandoClick: () -> Unit,
+    onVolver: () -> Unit,
+    carritoViewModel: CarritoViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -47,10 +52,9 @@ fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
             modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
 
         )
+        // bottom para continuar
         Button(
-            onClick = {
-                // Aquí va la navegación y  DespachoScreen
-            },
+            onClick = onContinuarClick,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -59,11 +63,9 @@ fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
         ) {
             Text(text = "Continuar a despacho")
         }
-
+// bottom para seguir comprando
         Button(
-            onClick = {
-                //aqui va la navegacion
-            },
+            onClick = onSeguirComprandoClick,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
@@ -73,5 +75,16 @@ fun CarritoScreen(carritoViewModel: CarritoViewModel = viewModel()) {
             Text(text = "Seguir comprando")
         }
 
+        //bottom para volver
+        Button(
+            onClick = onVolver,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(5.dp)
+        ) {
+            Text(text = "Volver")
+        }
     }
 }

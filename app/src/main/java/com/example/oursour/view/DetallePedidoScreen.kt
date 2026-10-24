@@ -19,50 +19,51 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.DetallePedidoViewModel
 
 @Composable
-fun DellePedidoScreen(detallePedidoViewModel: DetallePedidoViewModel = viewModel()){
+fun DetallePedidoScreen(
+    onVolver: () -> Unit,
+    detallePedidoViewModel: DetallePedidoViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier =  Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-
-    ){
-        // este es el titulo de la pantalla
+    ) {
+        // Título de la pantalla
         Text(
             text = "Detalle del pedido",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding( top = 60.dp,bottom = 12.dp)
+            modifier = Modifier.padding(top = 60.dp, bottom = 12.dp)
         )
-        // datos del pedido que vienen de Viewmodel
+
+        // Datos del pedido que vienen del ViewModel
         Text(text = detallePedidoViewModel.pedido, fontSize = 20.sp)
         Text(text = detallePedidoViewModel.estado)
         Text(text = detallePedidoViewModel.direccion)
         Text(text = detallePedidoViewModel.subtotal)
         Text(text = detallePedidoViewModel.costoDespacho)
+
+
         Text(
             text = detallePedidoViewModel.montoTotal,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
-        // aqui marcamos el espacio entre los datos
+
+        // Espacio entre los datos y el botón
         Spacer(modifier = Modifier.height(15.dp))
 
-        // ahora vamos con el botton para volver
+        // Botón para volver
         Button(
-            onClick = {
-                // aqui ira la navegacion de vuelta a mispedidos
-
-            },
+            onClick = onVolver,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
             shape = RoundedCornerShape(5.dp)
         ) {
-            Text("Volver a mis pedidos")
-
+            Text("Volver")
         }
-
     }
 }

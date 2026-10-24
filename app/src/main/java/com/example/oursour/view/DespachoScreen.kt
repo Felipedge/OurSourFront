@@ -21,18 +21,20 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.oursour.viewmodel.DespachoViewModel
 
-
 @Composable
-fun DespachoScreen(despachoViewModel: DespachoViewModel = viewModel()) {
+fun DespachoScreen(
+    onDireccionGuardada: () -> Unit,
+    onVolver: () -> Unit,
+    despachoViewModel: DespachoViewModel = viewModel()
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxSize()// con esto la columna ocupa toda la pantalla
-            .padding(16.dp) // aqui ocupamos margen de 16 para que no quede pegada a los bordes
-
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        // con el text le damos el titulo a ala pantalla
+        // Título de la pantalla
         Text(
             text = "Despacho",
             fontSize = 32.sp,
@@ -40,22 +42,23 @@ fun DespachoScreen(despachoViewModel: DespachoViewModel = viewModel()) {
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        // 1 CALLE CAJA DE TEXTO
+        // Caja de texto de calle
         OutlinedTextField(
             value = despachoViewModel.calle,
             onValueChange = { despachoViewModel.cambiarCalle(it) },
             label = { Text("Calle") },
             modifier = Modifier.fillMaxWidth()
         )
-        // 2 es la caja de texto de numero que es lo misma logica
+
+        // Caja de texto de número
         OutlinedTextField(
             value = despachoViewModel.numero,
             onValueChange = { despachoViewModel.cambiarNumero(it) },
             label = { Text("Numero") },
             modifier = Modifier.fillMaxWidth()
-
         )
-        // 3caja de texto de comuna
+
+        // Caja de texto de comuna
         OutlinedTextField(
             value = despachoViewModel.comuna,
             onValueChange = { despachoViewModel.cambiarComuna(it) },
@@ -63,16 +66,15 @@ fun DespachoScreen(despachoViewModel: DespachoViewModel = viewModel()) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // 4 caja de texto de ciudad
+        // Caja de texto de ciudad
         OutlinedTextField(
             value = despachoViewModel.ciudad,
             onValueChange = { despachoViewModel.cambiarCiudad(it) },
-            label = { Text("ciudad") },
+            label = { Text("Ciudad") },
             modifier = Modifier.fillMaxWidth()
         )
 
-
-        // 5 caja de texto de referencias
+        // Caja de texto de referencia
         OutlinedTextField(
             value = despachoViewModel.referencia,
             onValueChange = { despachoViewModel.cambiarReferencia(it) },
@@ -80,23 +82,24 @@ fun DespachoScreen(despachoViewModel: DespachoViewModel = viewModel()) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // mensaje de error
+        // Mensaje de error
         if (despachoViewModel.textoVisible) {
             Text(text = "Completa la calle, numero, comuna, ciudad", color = Color.Red)
         }
-        // espacio vacio de 15 de alto entre las cajas y el bottom
+
+        // Espacio entre las cajas y los botones
         Spacer(modifier = Modifier.height(15.dp))
 
-
+        // Botón para guardar la dirección
         Button(
             onClick = {
                 despachoViewModel.textoVisible = false
                 val validador = despachoViewModel.guardar()
-                if(validador){
-                }else {
+                if (validador) {
+                    onDireccionGuardada()
+                } else {
                     despachoViewModel.textoVisible = true
                 }
-
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -104,6 +107,18 @@ fun DespachoScreen(despachoViewModel: DespachoViewModel = viewModel()) {
             shape = RoundedCornerShape(5.dp)
         ) {
             Text("Guardar dirección")
+        }
+
+        // Botón para volver
+        Button(
+            onClick = onVolver,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(5.dp)
+        ) {
+            Text(text = "Volver")
         }
     }
 }
