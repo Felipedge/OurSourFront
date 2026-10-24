@@ -7,7 +7,6 @@ data class Ingredientes(
     val idProducto: Long?
 
 )
-
 data class DetalleReceta(
     val idDetalle : Long,
     val idIngredientes: Long,

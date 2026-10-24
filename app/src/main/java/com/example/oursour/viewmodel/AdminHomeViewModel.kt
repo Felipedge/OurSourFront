@@ -3,9 +3,9 @@ package com.example.oursour.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.oursour.model.AuthRepository
-import com.example.oursour.model.AuthRepositoryLocal
+import com.example.oursour.model.AuthRepositoryRoom
 import com.example.oursour.model.MetricasRepository
-import com.example.oursour.model.MetricasRepositoryLocal
+import com.example.oursour.model.MetricasRepositoryRoom
 import com.example.oursour.model.ResumenMetricas
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,8 +22,8 @@ data class AdminHomeUiState(
 )
 
 class AdminHomeViewModel(
-    private val authRepository: AuthRepository = AuthRepositoryLocal,
-    private val metricasRepository: MetricasRepository = MetricasRepositoryLocal
+    private val authRepository: AuthRepository = AuthRepositoryRoom,
+    private val metricasRepository: MetricasRepository = MetricasRepositoryRoom
 ) : ViewModel() {
 
 

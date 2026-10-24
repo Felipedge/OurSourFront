@@ -6,7 +6,7 @@ import com.example.oursour.model.BusquedasDia
 import com.example.oursour.model.Combinacion
 import com.example.oursour.model.Conteo
 import com.example.oursour.model.MetricasRepository
-import com.example.oursour.model.MetricasRepositoryLocal
+import com.example.oursour.model.MetricasRepositoryRoom
 import com.example.oursour.model.ResumenMetricas
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -29,7 +29,7 @@ data class MetricasUiState(
 )
 
 class MetricasViewModel(
-    private val repository: MetricasRepository = MetricasRepositoryLocal
+    private val repository: MetricasRepository = MetricasRepositoryRoom
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MetricasUiState())

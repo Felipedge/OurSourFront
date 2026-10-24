@@ -4,7 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.oursour.model.AuthRepository
-import com.example.oursour.model.AuthRepositoryLocal
+import com.example.oursour.model.AuthRepositoryRoom
 import com.example.oursour.model.DatosUsuario
 import com.example.oursour.model.RegisterRequest
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +28,7 @@ data class RegistroUiState(
 )
 
 class RegistroViewModel(
-    private val repository: AuthRepository = AuthRepositoryLocal
+    private val repository: AuthRepository = AuthRepositoryRoom
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegistroUiState())

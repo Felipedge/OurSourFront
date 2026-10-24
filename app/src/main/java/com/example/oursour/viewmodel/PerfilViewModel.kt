@@ -2,7 +2,7 @@ package com.example.oursour.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.oursour.model.AuthRepository
-import com.example.oursour.model.AuthRepositoryLocal
+import com.example.oursour.model.AuthRepositoryRoom
 import com.example.oursour.model.DatosUsuario
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ data class PerfilUiState(
 )
 
 class PerfilViewModel(
-    private val repository: AuthRepository = AuthRepositoryLocal
+    private val repository: AuthRepository = AuthRepositoryRoom
 ) : ViewModel() {
 
 
