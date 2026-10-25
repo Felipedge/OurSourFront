@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.oursour.model.CarroLocal
 import com.example.oursour.view.*
 import com.example.oursour.viewmodel.*
 import com.journeyapps.barcodescanner.ScanContract
@@ -92,7 +93,7 @@ fun AppNavHost() {
 
             HomeScreen(
                 nombreUsuario = estado.usuario?.nombre ?: "",
-                cantidadEnCarro = 0,
+                cantidadEnCarro = CarroLocal.cantidadTotal,
                 onBuscarRecetasClick = { navController.navigate(Rutas.SELECCIONAR_INGREDIENTES) },
                 onIngredientesFrecuentesClick = { navController.navigate(Rutas.INGREDIENTES_FRECUENTES) },
                 onCatalogoClick = { navController.navigate(Rutas.CATALOGO) },
@@ -138,7 +139,7 @@ fun AppNavHost() {
                 error = estado.error,
                 busqueda = estado.busqueda,
                 productos = estado.productos,
-                cantidadEnCarro = estado.cantidadEnCarro,
+                cantidadEnCarro = CarroLocal.cantidadTotal,
                 mensajeQr = estado.mensajeQr,
                 onBusquedaChange = { vm.onBusquedaChange(it) },
                 onProductoClick = { id -> navController.navigate(Rutas.detalleProducto(id)) },

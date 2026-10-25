@@ -2,10 +2,10 @@ package com.example.oursour.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.oursour.model.CarroLocal
 import com.example.oursour.model.Producto
 import com.example.oursour.model.ProductoRepository
 import com.example.oursour.model.ProductoRepositoryLocal
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -64,11 +64,15 @@ class DetalleProductoViewModel(
         }
 
     fun onAgregarAlCarroClick() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(agregando = true) }
-            delay(400)
-            _uiState.update { it.copy(agregando = false, agregadoAlCarro = true) }
-        }
+        val estado = _uiState.value
+        val producto = estado.producto ?: return
+        val yaEnCarro = CarroLocal.items.firstOrNull { it.producto.idProducto == producto.idProducto }?.cantidad ?: 0
+        CarroLocal.agregar(producto)
+        CarroLocal.cambiarCantidad(
+            producto.idProducto,
+            (yaEnCarro + estado.cantidad).coerceAtMost(producto.stockSimulado)
+        )
+        _uiState.update { it.copy(agregadoAlCarro = true) }
     }
 
     fun onAvisoMostrado() =

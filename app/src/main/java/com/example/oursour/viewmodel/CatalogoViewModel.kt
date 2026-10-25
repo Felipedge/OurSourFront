@@ -2,6 +2,7 @@ package com.example.oursour.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.oursour.model.CarroLocal
 import com.example.oursour.model.Producto
 import com.example.oursour.model.ProductoRepository
 import com.example.oursour.model.ProductoRepositoryLocal
@@ -17,7 +18,7 @@ data class CatalogoUiState(
     val error: String? = null,
     val busqueda: String = "",
     val todos: List<Producto> = emptyList(),
-    val cantidadEnCarro: Int = 0,
+    val cantidadEnCarro: Int = CarroLocal.cantidadTotal,
     val mensajeQr: String? = null,
     val idProductoQr: Long? = null
 ) {
@@ -53,8 +54,13 @@ class CatalogoViewModel(
     fun onBusquedaChange(valor: String) =
         _uiState.update { it.copy(busqueda = valor) }
 
-    fun onAgregarAlCarroClick(idProducto: Long) =
-        _uiState.update { it.copy(cantidadEnCarro = it.cantidadEnCarro + 1) }
+    // agrega 1 unidad al carro compartido (CarroLocal)
+    fun onAgregarAlCarroClick(idProducto: Long) {
+        val producto = _uiState.value.todos.firstOrNull { it.idProducto == idProducto } ?: return
+        if (!producto.hayStock) return
+        CarroLocal.agregar(producto)
+        _uiState.update { it.copy(cantidadEnCarro = CarroLocal.cantidadTotal) }
+    }
 
     fun onQrLeido(texto: String?) {
         if (texto == null) return
