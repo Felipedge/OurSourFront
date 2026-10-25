@@ -28,10 +28,19 @@ class DetalleRecetaViewModel : ViewModel() {
     // aqui tenemos  los que el usuario no marcó
     val faltantes = ingredientes.filter { it.id !in RecetaRepositoryLocal.seleccionActual }
 
-    //aqui tenemos un  mensaje que se muestra después de agregar un producto al carro
+    //aqui buscamos el  mensaje que se muestra después de agregar un producto al carro
     var mensaje by mutableStateOf("")
 
-    //aqui tenemos lo que  busca en el catálogo un producto con el nombre del ingrediente y lo agrega al carro
+    //aqui buscamos los destilados y licores se venden en el catálogo, el resto no
+    fun seVende(ingrediente: Ingrediente): Boolean {
+        var respuesta = false
+        if (ingrediente.categoria == "DESTILADO" || ingrediente.categoria == "LICOR") {
+            respuesta = true
+        }
+        return respuesta
+    }
+
+    //aqui  buscamos en el catálogo un producto con el nombre del ingrediente y lo agrega al carro
     fun agregarAlCarro(ingrediente: Ingrediente) {
         viewModelScope.launch {
             ProductoRepositoryLocal.listar()
@@ -40,7 +49,7 @@ class DetalleRecetaViewModel : ViewModel() {
                         it.nombreComercial.contains(ingrediente.nombre, ignoreCase = true) && it.hayStock
                     }
                     if (producto == null) {
-                        mensaje = "No hay producto disponible para " + ingrediente.nombre
+                        mensaje = "No hay stock disponible para " + ingrediente.nombre
                     } else {
                         CarroLocal.agregar(producto)
                         mensaje = producto.nombreComercial + " agregado al carro"
