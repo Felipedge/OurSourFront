@@ -58,11 +58,16 @@ fun DetalleRecetaScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "• " + faltante.nombre, style = MaterialTheme.typography.bodyLarge)
-                        OutlinedButton(
-                            onClick = { detalleRecetaViewModel.agregarAlCarro(faltante) },
-                            shape = RoundedCornerShape(5.dp)
-                        ) {
-                            Text("Agregar al carro")
+                        // el botón solo aparece si el ingrediente se vende en el catálogo
+                        if (detalleRecetaViewModel.seVende(faltante)) {
+                            OutlinedButton(
+                                onClick = { detalleRecetaViewModel.agregarAlCarro(faltante) },
+                                shape = RoundedCornerShape(5.dp)
+                            ) {
+                                Text("Agregar al carro")
+                            }
+                        } else {
+                            Text(text = "No se vende en el catálogo", style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }

@@ -57,12 +57,21 @@ fun IngredienteFrecuenteScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                text = "Marca los ingredientes que usas siempre",
-                style = MaterialTheme.typography.titleMedium
-            )
+            // aqui tenemos la lista de los ingredientes frecuentes guardados
+            TituloSeccion("Tus ingredientes frecuentes")
+            if (ingredienteFrecuenteViewModel.listaFrecuentes.isEmpty()) {
+                Text(
+                    text = "Aún no tienes ingredientes frecuentes",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            } else {
+                ingredienteFrecuenteViewModel.listaFrecuentes.forEach { ingrediente ->
+                    Text(text = "• " + ingrediente.nombre, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
 
-            //aqui tenemos los  Ingredientes, uno por fila con su casilla
+            // aqui tenemos los  Ingredientes para marcar o quitar, uno por fila con su casilla
+            TituloSeccion("Marca los ingredientes que usas siempre")
             RecetaRepositoryLocal.ingredientes.forEach { ingrediente ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
