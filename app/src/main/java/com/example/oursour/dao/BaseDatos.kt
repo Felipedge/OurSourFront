@@ -6,7 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.oursour.model.BusquedaEntity
 import com.example.oursour.model.BusquedaIngredienteEntity
+import com.example.oursour.model.CarroItemEntity
 import com.example.oursour.model.ConsultaRecetaEntity
+import com.example.oursour.model.PedidoEntity
+import com.example.oursour.model.PedidoItemEntity
 import com.example.oursour.model.UsuarioEntity
 import com.example.oursour.model.VentaEntity
 import com.example.oursour.model.VentaProductoEntity
@@ -18,9 +21,12 @@ import com.example.oursour.model.VentaProductoEntity
         BusquedaIngredienteEntity::class,
         ConsultaRecetaEntity::class,
         VentaEntity::class,
-        VentaProductoEntity::class
+        VentaProductoEntity::class,
+        CarroItemEntity::class,
+        PedidoEntity::class,
+        PedidoItemEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class BaseDatos : RoomDatabase() {
@@ -28,6 +34,10 @@ abstract class BaseDatos : RoomDatabase() {
     abstract fun usuarioDao(): UsuarioDao
 
     abstract fun metricasDao(): MetricasDao
+
+    abstract fun carroDao(): CarroDao
+
+    abstract fun pedidoDao(): PedidoDao
 
     companion object {
         private var instancia: BaseDatos? = null
