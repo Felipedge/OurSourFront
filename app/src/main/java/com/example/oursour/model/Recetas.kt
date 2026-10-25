@@ -1,5 +1,9 @@
 package com.example.oursour.model
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
 data class Ingrediente(val id: Long, val nombre: String, val categoria: String)
 
 data class Receta(
@@ -43,8 +47,15 @@ object RecetaRepositoryLocal {
     var seleccionActual: Set<Long> = emptySet()   // la guarda SeleccionarIngredientes
     var recetaElegida: Long? = null //aqui tenemos que  guarda RecetasRecomendadas
 
-    var frecuentes: Set<Long> = emptySet()
+    // aqui contamos cuantas veces se ha buscado cada ingrediente (id del ingrediente, veces)
+    var busquedas by mutableStateOf(mapOf<Long, Int>())
 
+    // suma 1 a cada ingrediente que se uso en una busqueda
+    fun contarBusqueda(ids: Set<Long>) {
+        val nuevo = busquedas.toMutableMap()
+        ids.forEach { id -> nuevo[id] = (nuevo[id] ?: 0) + 1 }
+        busquedas = nuevo
+    }
 
     fun recomendar(): List<RecetaRecomendada> =
         recetas.map { r ->
