@@ -22,6 +22,7 @@ fun AdminProductosScreen(
     onNuevoClick: () -> Unit,
     onEditarClick: (Long) -> Unit,
     onEliminarClick: (Long) -> Unit,
+    onActivarClick: (Long) -> Unit,
     onConfirmarEliminarClick: () -> Unit,
     onCancelarEliminarClick: () -> Unit,
     onVolver: () -> Unit,
@@ -72,6 +73,10 @@ fun AdminProductosScreen(
                                                 tint = MaterialTheme.colorScheme.error
                                             )
                                         }
+                                    } else {
+                                        TextButton(onClick = { onActivarClick(producto.idProducto) }) {
+                                            Text("Activar")
+                                        }
                                     }
                                 }
                             }
@@ -115,7 +120,7 @@ fun AdminProductosScreenPreview() {
                 Producto(10, "Licor de café", "Licor de café para espresso martini. 700 ml.", 9990.0, 0, false)
             ),
             productoAEliminar = null,
-            onNuevoClick = {}, onEditarClick = {}, onEliminarClick = {},
+            onNuevoClick = {}, onEditarClick = {}, onEliminarClick = {}, onActivarClick = {},
             onConfirmarEliminarClick = {}, onCancelarEliminarClick = {}, onVolver = {}, onReintentar = {}
         )
     }

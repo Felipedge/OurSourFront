@@ -151,6 +151,7 @@ fun AppNavHost() {
             )
         }
 
+
         composable(
             route = Rutas.DETALLE_PRODUCTO,
             arguments = listOf(navArgument("idProducto") { type = NavType.LongType })
@@ -218,6 +219,7 @@ fun AppNavHost() {
                 onNuevoClick = { navController.navigate(Rutas.productoForm()) },
                 onEditarClick = { id -> navController.navigate(Rutas.productoForm(id)) },
                 onEliminarClick = { id -> vm.onEliminarClick(id) },
+                onActivarClick = { id -> vm.onActivarClick(id) },
                 onConfirmarEliminarClick = { vm.onConfirmarEliminarClick() },
                 onCancelarEliminarClick = { vm.onCancelarEliminarClick() },
                 onVolver = volver,
@@ -308,7 +310,10 @@ fun AppNavHost() {
         }
 
         composable(Rutas.DETALLE_RECETA) {
-            DetalleRecetaScreen(onVolver = volver)
+            DetalleRecetaScreen(
+                onVolver = volver,
+                onIrAlCarroClick = { navController.navigate(Rutas.CARRITO) }
+            )
         }
 
         composable(Rutas.CARRITO) {
