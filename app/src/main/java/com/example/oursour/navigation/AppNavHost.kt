@@ -218,6 +218,7 @@ fun AppNavHost() {
                 onNuevoClick = { navController.navigate(Rutas.productoForm()) },
                 onEditarClick = { id -> navController.navigate(Rutas.productoForm(id)) },
                 onEliminarClick = { id -> vm.onEliminarClick(id) },
+                onActivarClick = { id -> vm.onActivarClick(id) },
                 onConfirmarEliminarClick = { vm.onConfirmarEliminarClick() },
                 onCancelarEliminarClick = { vm.onCancelarEliminarClick() },
                 onVolver = volver,

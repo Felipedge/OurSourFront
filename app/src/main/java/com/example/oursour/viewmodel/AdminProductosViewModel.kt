@@ -58,4 +58,14 @@ class AdminProductosViewModel(
                 }
         }
     }
+
+    fun onActivarClick(idProducto: Long) {
+        viewModelScope.launch {
+            repository.activar(idProducto)
+                .onSuccess { cargar() }
+                .onFailure { e ->
+                    _uiState.update { it.copy(error = e.message ?: "No se pudo activar el producto") }
+                }
+        }
+    }
 }
