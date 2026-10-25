@@ -151,6 +151,7 @@ fun AppNavHost() {
             )
         }
 
+
         composable(
             route = Rutas.DETALLE_PRODUCTO,
             arguments = listOf(navArgument("idProducto") { type = NavType.LongType })
@@ -309,7 +310,10 @@ fun AppNavHost() {
         }
 
         composable(Rutas.DETALLE_RECETA) {
-            DetalleRecetaScreen(onVolver = volver)
+            DetalleRecetaScreen(
+                onVolver = volver,
+                onIrAlCarroClick = { navController.navigate(Rutas.CARRITO) }
+            )
         }
 
         composable(Rutas.CARRITO) {
