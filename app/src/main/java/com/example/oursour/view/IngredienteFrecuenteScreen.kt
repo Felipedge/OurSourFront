@@ -2,52 +2,27 @@ package com.example.oursour.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.oursour.model.RecetaRepositoryLocal
 import com.example.oursour.viewmodel.IngredienteFrecuenteViewModel
 
 @Composable
 fun IngredienteFrecuenteScreen(
-    onVerRecetasClick: () -> Unit,
+    onVerRecetasClick: () -> Unit = {},
     onVolver: () -> Unit,
     ingredienteFrecuenteViewModel: IngredienteFrecuenteViewModel = viewModel()
 ) {
     PantallaConBarra(
         titulo = ingredienteFrecuenteViewModel.titulo,
-        onVolver = onVolver,
-        // aqui tenemos los  Botónes para ver recetas, fijo abajo y siempre visible
-        barraInferior = {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Button(
-                    onClick = {
-                        ingredienteFrecuenteViewModel.guardarSeleccion()
-                        onVerRecetasClick()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(5.dp)
-                ) {
-                    Text("Ver recetas")
-                }
-            }
-        }
+        onVolver = onVolver
     ) { padding ->
         Column(
             modifier = Modifier
@@ -57,7 +32,7 @@ fun IngredienteFrecuenteScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // aqui tenemos la lista de los ingredientes frecuentes guardados
+            // aqui tenemos la lista de los ingredientes mas buscados
             TituloSeccion("Tus ingredientes frecuentes")
             if (ingredienteFrecuenteViewModel.listaFrecuentes.isEmpty()) {
                 Text(
@@ -66,19 +41,10 @@ fun IngredienteFrecuenteScreen(
                 )
             } else {
                 ingredienteFrecuenteViewModel.listaFrecuentes.forEach { ingrediente ->
-                    Text(text = "• " + ingrediente.nombre, style = MaterialTheme.typography.bodyLarge)
-                }
-            }
-
-            // aqui tenemos los  Ingredientes para marcar o quitar, uno por fila con su casilla
-            TituloSeccion("Marca los ingredientes que usas siempre")
-            RecetaRepositoryLocal.ingredientes.forEach { ingrediente ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(
-                        checked = ingrediente.id in ingredienteFrecuenteViewModel.frecuentes,
-                        onCheckedChange = { ingredienteFrecuenteViewModel.alternar(ingrediente.id) }
+                    Text(
+                        text = "• " + ingrediente.nombre + " (" + ingredienteFrecuenteViewModel.veces(ingrediente.id) + " veces)",
+                        style = MaterialTheme.typography.bodyLarge
                     )
-                    Text(text = ingrediente.nombre, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }

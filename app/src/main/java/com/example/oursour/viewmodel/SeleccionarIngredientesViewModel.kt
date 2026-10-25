@@ -16,7 +16,9 @@ class SeleccionarIngredientesViewModel : ViewModel() {
     }
 
     // aqui  guardamos la selección para que lo use RecetasRecomendadas
+    // y contamos la busqueda para los ingredientes frecuentes
     fun guardarSeleccion() {
         RecetaRepositoryLocal.seleccionActual = seleccionados
+        RecetaRepositoryLocal.contarBusqueda(seleccionados)
     }
 }
