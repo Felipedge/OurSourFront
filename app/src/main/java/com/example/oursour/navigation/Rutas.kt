@@ -12,6 +12,7 @@ object Rutas {
     const val ADMIN_PRODUCTOS = "admin/productos"
     const val PRODUCTO_FORM = "admin/producto?idProducto={idProducto}"
     const val METRICAS = "admin/metricas"
+    const val ADMIN_USUARIOS = "admin/usuarios"
 
     const val SELECCIONAR_INGREDIENTES = "ingredientes"
     const val INGREDIENTES_FRECUENTES = "ingredientes/frecuentes"
