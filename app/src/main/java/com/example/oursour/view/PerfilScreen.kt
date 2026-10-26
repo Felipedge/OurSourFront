@@ -123,20 +123,7 @@ private fun TarjetaPerfil(usuario: DatosUsuario?) {
             .padding(20.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .border(2.dp, colorTexto, CircleShape)
-                    .background(Color.White.copy(alpha = 0.15f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    iniciales(usuario?.nombre),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = colorTexto
-                )
-            }
+
             Spacer(Modifier.width(16.dp))
             Column(
                 modifier = Modifier.weight(1f),

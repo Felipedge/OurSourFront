@@ -65,7 +65,7 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = "COCTELERÍA EN CASA",
+                text = "Tù App de pedidos y recetas",
                 style = MaterialTheme.typography.labelMedium,
                 letterSpacing = 2.sp,
                 color = MaterialTheme.colorScheme.secondary

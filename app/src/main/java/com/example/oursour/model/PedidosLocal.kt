@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 data class PedidoLocal(
     val numero: Int,
+    val idUsuario: Long,
     val estado: String,
     val items: List<ItemCarro>,
     val subtotal: Double,
@@ -21,11 +22,10 @@ data class PedidoLocal(
     val direccion: String
 )
 
-// ==================== Tablas de Room (@Entity) ====================
-
 @Entity(tableName = "pedido")
 data class PedidoEntity(
     @PrimaryKey val numero: Int,
+    val idUsuario: Long,
     val estado: String,
     val subtotal: Double,
     val costoDespacho: Double,
@@ -43,28 +43,31 @@ data class PedidoItemEntity(
     val cantidad: Int
 )
 
-// ==================== Pedidos ====================
-
 object PedidosLocal {
-    var pedidos by mutableStateOf(listOf<PedidoLocal>())
+    private var todos by mutableStateOf(listOf<PedidoLocal>())
+
+    val pedidos: List<PedidoLocal>
+        get() = todos.filter { it.idUsuario == idUsuarioActual() }
+
+    private fun idUsuarioActual(): Long = AuthRepositoryRoom.usuarioActual()?.idUsuario ?: 0L
+
+    fun siguienteNumero(): Int = (todos.maxOfOrNull { it.numero } ?: 0) + 1
 
     private val dao get() = BaseDatos.obtener().pedidoDao()
     private val alcance = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    //aqui tenemos  Las dirección la guarda la pantalla de Despacho
     var direccionActual = ""
 
-    //aqui tenemos los  Resultado del último intento de pago: "APROBADO" o "RECHAZADO"
     var ultimoResultado = ""
     var ultimoNumero = 0
 
     var numeroElegido = 0
 
-    // se llama una vez al abrir la app (MainActivity) para recuperar los pedidos guardados
     suspend fun cargar() {
-        pedidos = dao.listarPedidos().map { p ->
+        todos = dao.listarPedidos().map { p ->
             PedidoLocal(
                 numero = p.numero,
+                idUsuario = p.idUsuario,
                 estado = p.estado,
                 items = dao.itemsDe(p.numero).map {
                     ItemCarro(Producto(it.idProducto, it.nombre, null, it.precioUnitario, it.cantidad, true), it.cantidad)
@@ -77,15 +80,15 @@ object PedidosLocal {
         }
     }
 
-    // aqui tenemos los  Pago sandbox: se aprueba salvo que el método escrito sea "rechazada"
     fun pagar(metodo: String): Boolean {
         if (metodo.contains("rechazada", ignoreCase = true)) {
             ultimoResultado = "RECHAZADO"
             return false
         }
-        val numero = (pedidos.maxOfOrNull { it.numero } ?: 0) + 1
+        val numero = siguienteNumero()
         val nuevo = PedidoLocal(
             numero = numero,
+            idUsuario = idUsuarioActual(),
             estado = "SOLICITADO",
             items = CarroLocal.items,
             subtotal = CarroLocal.subtotal,
@@ -93,7 +96,7 @@ object PedidosLocal {
             total = CarroLocal.total,
             direccion = direccionActual
         )
-        pedidos = pedidos + nuevo
+        todos = todos + nuevo
         guardar(nuevo)
         ultimoResultado = "APROBADO"
         ultimoNumero = numero
@@ -101,10 +104,10 @@ object PedidosLocal {
         return true
     }
 
-    // guarda el pedido y sus productos en Room (en segundo plano)
     private fun guardar(pedido: PedidoLocal) {
         val cabecera = PedidoEntity(
             numero = pedido.numero,
+            idUsuario = pedido.idUsuario,
             estado = pedido.estado,
             subtotal = pedido.subtotal,
             costoDespacho = pedido.costoDespacho,
@@ -123,4 +126,3 @@ object PedidosLocal {
         alcance.launch { dao.guardarPedido(cabecera, detalle) }
     }
 }
-

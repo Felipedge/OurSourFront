@@ -17,7 +17,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         BaseDatos.iniciar(applicationContext)
 
-        // recupera el carro y los pedidos guardados en Room
         lifecycleScope.launch {
             CarroLocal.cargar()
             PedidosLocal.cargar()

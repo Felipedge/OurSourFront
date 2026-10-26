@@ -201,6 +201,7 @@ fun AppNavHost() {
                 resumen = estado.resumen,
                 onGestionarCatalogoClick = { navController.navigate(Rutas.ADMIN_PRODUCTOS) },
                 onVerMetricasClick = { navController.navigate(Rutas.METRICAS) },
+                onVerUsuariosClick = { navController.navigate(Rutas.ADMIN_USUARIOS) },
                 onCerrarSesionClick = { vm.onCerrarSesionClick() }
             )
         }
@@ -282,6 +283,19 @@ fun AppNavHost() {
                 productosTop = estado.productosTop,
                 combinaciones = estado.combinaciones,
                 onDiasChange = { vm.onDiasChange(it) },
+                onVolver = volver,
+                onReintentar = { vm.cargar() }
+            )
+        }
+
+        composable(Rutas.ADMIN_USUARIOS) {
+            val vm: AdminUsuariosViewModel = viewModel()
+            val estado by vm.uiState.collectAsStateWithLifecycle()
+
+            AdminUsuariosScreen(
+                cargando = estado.cargando,
+                error = estado.error,
+                usuarios = estado.usuarios,
                 onVolver = volver,
                 onReintentar = { vm.cargar() }
             )

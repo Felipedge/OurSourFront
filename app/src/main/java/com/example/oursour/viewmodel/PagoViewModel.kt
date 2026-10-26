@@ -10,7 +10,7 @@ import com.example.oursour.model.PedidosLocal
 class PagoViewModel: ViewModel() {
     // datos que vienen del carro
     val pedido: String
-        get() = "Pedido N ${PedidosLocal.pedidos.size + 1}°"
+        get() = "Pedido N ${PedidosLocal.siguienteNumero()}°"
     val monto: Double
         get() = CarroLocal.total
 

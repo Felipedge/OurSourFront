@@ -26,7 +26,7 @@ import com.example.oursour.model.VentaProductoEntity
         PedidoEntity::class,
         PedidoItemEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class BaseDatos : RoomDatabase() {

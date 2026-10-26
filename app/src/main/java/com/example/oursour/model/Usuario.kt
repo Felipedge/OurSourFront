@@ -23,7 +23,6 @@ data class DatosUsuario(
     val esAdmin: Boolean get() = rol == "ADMIN"
 }
 
-
 data class LoginRequest(
     val email: String,
     val password: String
@@ -33,8 +32,6 @@ data class RegisterRequest(
     val email: String,
     val password: String
 )
-
-// ==================== Tabla de Room (@Entity) ====================
 
 @Entity(tableName = "usuario", indices = [Index(value = ["email"], unique = true)])
 data class UsuarioEntity(
@@ -48,16 +45,14 @@ data class UsuarioEntity(
     fun aDatosUsuario(): DatosUsuario = DatosUsuario(idUsuario, nombre, email, rol, fechaRegistro)
 }
 
-// ==================== Repositorio ====================
-
 interface AuthRepository {
     suspend fun login(req: LoginRequest): Result<AuthResponse>
     suspend fun registrar(req: RegisterRequest): Result<AuthResponse>
+    suspend fun listarUsuarios(): Result<List<DatosUsuario>>
     fun usuarioActual(): DatosUsuario?
     fun token(): String?
     fun cerrarSesion()
 }
-
 
 object AuthRepositoryLocal : AuthRepository {
 
@@ -77,7 +72,7 @@ object AuthRepositoryLocal : AuthRepository {
     private var sesion: AuthResponse? = null
 
     override suspend fun login(req: LoginRequest): Result<AuthResponse> {
-        delay(600) // simula la red
+        delay(600)
         val cuenta = cuentas[req.email.trim().lowercase()]
         if (cuenta == null || cuenta.password != req.password) {
             return Result.failure(IllegalArgumentException("Email o contraseña incorrectos"))
@@ -101,6 +96,9 @@ object AuthRepositoryLocal : AuthRepository {
         cuentas[email] = CuentaLocal(req.password, nuevo)
         return Result.success(crearSesion(nuevo))
     }
+
+    override suspend fun listarUsuarios(): Result<List<DatosUsuario>> =
+        Result.success(cuentas.values.map { it.datos }.sortedBy { it.idUsuario })
 
     override fun usuarioActual(): DatosUsuario? = sesion?.usuario
 
@@ -146,12 +144,21 @@ object AuthRepositoryRoom : AuthRepository {
         return Result.success(crearSesion(nuevo.copy(idUsuario = idGenerado).aDatosUsuario()))
     }
 
+    override suspend fun listarUsuarios(): Result<List<DatosUsuario>> =
+        try {
+            crearCuentasDePrueba()
+            Result.success(dao.listar().map { it.aDatosUsuario() })
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+
     override fun usuarioActual(): DatosUsuario? = sesion?.usuario
 
     override fun token(): String? = sesion?.token
 
     override fun cerrarSesion() {
         sesion = null
+        CarroLocal.vaciar()
     }
 
     private suspend fun crearCuentasDePrueba() {
@@ -171,7 +178,9 @@ object AuthRepositoryRoom : AuthRepository {
         }
     }
 
-    private fun crearSesion(datos: DatosUsuario): AuthResponse =
-        AuthResponse(token = "token-local-${datos.idUsuario}", tipo = "Bearer", usuario = datos)
+    private fun crearSesion(datos: DatosUsuario): AuthResponse {
+        CarroLocal.vaciar()
+        return AuthResponse(token = "token-local-${datos.idUsuario}", tipo = "Bearer", usuario = datos)
             .also { sesion = it }
+    }
 }

@@ -19,6 +19,7 @@ fun AdminHomeScreen(
     resumen: ResumenMetricas?,
     onGestionarCatalogoClick: () -> Unit,
     onVerMetricasClick: () -> Unit,
+    onVerUsuariosClick: () -> Unit,
     onCerrarSesionClick: () -> Unit
 ) {
     PantallaConBarra(
@@ -64,6 +65,7 @@ fun AdminHomeScreen(
 
             item { OpcionAdmin("Gestionar catálogo", "Crear, editar y desactivar productos", onGestionarCatalogoClick) }
             item { OpcionAdmin("Ver métricas", "Ingredientes, recetas y tendencias de búsqueda", onVerMetricasClick) }
+            item { OpcionAdmin("Ver usuarios", "Cuentas registradas en la app", onVerUsuariosClick) }
         }
     }
 }
@@ -87,6 +89,6 @@ private fun OpcionAdmin(titulo: String, descripcion: String, onClick: () -> Unit
 @Composable
 fun AdminHomeScreenPreview() {
     MaterialTheme {
-        AdminHomeScreen("Equipo Our Sour", false, ResumenMetricas(12, 30, 4, 45960.0), {}, {}, {})
+        AdminHomeScreen("Equipo Our Sour", false, ResumenMetricas(12, 30, 4, 45960.0), {}, {}, {}, {})
     }
 }
