@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.oursour.model.PedidosLocal
 
 class ResultadoPagoViewModel: ViewModel(){
-    // el resultado viene del último intento de pago
+
     val esError: Boolean
         get() = PedidosLocal.ultimoResultado == "RECHAZADO"
 

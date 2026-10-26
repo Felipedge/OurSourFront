@@ -32,7 +32,6 @@ fun IngredienteFrecuenteScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // aqui tenemos la lista de los ingredientes mas buscados
             TituloSeccion("Tus ingredientes frecuentes")
             if (ingredienteFrecuenteViewModel.listaFrecuentes.isEmpty()) {
                 Text(

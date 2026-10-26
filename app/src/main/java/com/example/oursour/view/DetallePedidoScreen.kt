@@ -28,7 +28,7 @@ fun DetallePedidoScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Datos del pedido que vienen del ViewModel
+
             Text(text = detallePedidoViewModel.pedido, style = MaterialTheme.typography.titleMedium)
             Text(
                 text = "Estado: ${textoEstadoPedido(detallePedidoViewModel.estado)}",
@@ -39,7 +39,7 @@ fun DetallePedidoScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            // Productos del pedido
+
             detallePedidoViewModel.items.forEach { item ->
                 Text(
                     text = "${item.producto.nombreComercial} x${item.cantidad} - ${formatearPesos(item.producto.precioUnitario * item.cantidad)}",

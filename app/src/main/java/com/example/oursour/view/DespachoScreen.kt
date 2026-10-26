@@ -31,7 +31,7 @@ fun DespachoScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            //aqui tenemos la  Caja de texto de calle
+
             OutlinedTextField(
                 value = despachoViewModel.calle,
                 onValueChange = { despachoViewModel.cambiarCalle(it) },
@@ -39,7 +39,7 @@ fun DespachoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //aqui tenemos la  Caja de texto de número
+
             OutlinedTextField(
                 value = despachoViewModel.numero,
                 onValueChange = { despachoViewModel.cambiarNumero(it) },
@@ -47,7 +47,7 @@ fun DespachoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //aqui tenemos la  Caja de texto de comuna
+
             OutlinedTextField(
                 value = despachoViewModel.comuna,
                 onValueChange = { despachoViewModel.cambiarComuna(it) },
@@ -55,7 +55,7 @@ fun DespachoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //aqui tenemos la  Caja de texto de ciudad
+
             OutlinedTextField(
                 value = despachoViewModel.ciudad,
                 onValueChange = { despachoViewModel.cambiarCiudad(it) },
@@ -63,7 +63,7 @@ fun DespachoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //aqui tenemos la  Caja de texto de referencia
+
             OutlinedTextField(
                 value = despachoViewModel.referencia,
                 onValueChange = { despachoViewModel.cambiarReferencia(it) },
@@ -71,7 +71,7 @@ fun DespachoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            //aqui tenemos el  Mensaje de error
+
             if (despachoViewModel.textoVisible) {
                 Text(
                     text = "Completa la calle, numero, comuna, ciudad",
@@ -80,7 +80,7 @@ fun DespachoScreen(
                 )
             }
 
-            //aqui tenemos el  Botón para guardar la dirección
+
             Button(
                 onClick = {
                     despachoViewModel.textoVisible = false

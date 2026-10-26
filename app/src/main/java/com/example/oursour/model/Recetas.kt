@@ -44,13 +44,12 @@ object RecetaRepositoryLocal {
         Receta(6, "Naranja Soda", "MOCKTAIL", "Jugo de naranja con soda y hielo.", listOf(17, 15))
     )
 
-    var seleccionActual: Set<Long> = emptySet()   // la guarda SeleccionarIngredientes
-    var recetaElegida: Long? = null //aqui tenemos que  guarda RecetasRecomendadas
+    var seleccionActual: Set<Long> = emptySet()
+    var recetaElegida: Long? = null
 
-    // aqui contamos cuantas veces se ha buscado cada ingrediente (id del ingrediente, veces)
     var busquedas by mutableStateOf(mapOf<Long, Int>())
 
-    // suma 1 a cada ingrediente que se uso en una busqueda
+
     fun contarBusqueda(ids: Set<Long>) {
         val nuevo = busquedas.toMutableMap()
         ids.forEach { id -> nuevo[id] = (nuevo[id] ?: 0) + 1 }

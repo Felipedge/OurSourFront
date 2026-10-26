@@ -7,10 +7,8 @@ import com.example.oursour.model.PedidosLocal
 class MisPedidoViewModel: ViewModel(){
     val titulo = "Mis pedidos"
 
-    // aqui tenemos los  pedidos que se crearon al pagar
     val pedidos: List<PedidoLocal>
         get() = PedidosLocal.pedidos
-
     fun elegirPedido(numero: Int) {
         PedidosLocal.numeroElegido = numero
     }

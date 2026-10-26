@@ -42,7 +42,7 @@ fun PagoScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            // aqui tenemos la  lista de métodos de pago
+
             TituloSeccion("Método de pago")
             pagoViewModel.opciones.forEach { opcion ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -54,7 +54,6 @@ fun PagoScreen(
                 }
             }
 
-            // aqui tenemos las  cuotas, solo si eligió tarjeta de crédito
             if (pagoViewModel.esCredito) {
                 TituloSeccion("Cuotas")
                 pagoViewModel.cuotasDisponibles.forEach { n ->
@@ -71,7 +70,7 @@ fun PagoScreen(
                 }
             }
 
-            //aqui tenemos los  Mensajes de error
+
             if (pagoViewModel.textoVisible) {
                 Text(
                     text = "ingrese un metodo de pago",
@@ -80,7 +79,6 @@ fun PagoScreen(
                 )
             }
 
-            //aqui tenemos los  Botón para pagar
             Button(
                 onClick = {
                     pagoViewModel.textoVisible = false

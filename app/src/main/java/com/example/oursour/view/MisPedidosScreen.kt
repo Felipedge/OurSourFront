@@ -32,12 +32,12 @@ fun MisPedidosScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Mensaje si todavía no hay pedidos
+
             if (misPedidosViewModel.pedidos.isEmpty()) {
                 Text(text = "Aún no tienes pedidos", style = MaterialTheme.typography.bodyLarge)
             }
 
-            //aqui tenemos los Pedidos del usuario
+
             misPedidosViewModel.pedidos.forEach { pedido ->
                 Card(
                     modifier = Modifier

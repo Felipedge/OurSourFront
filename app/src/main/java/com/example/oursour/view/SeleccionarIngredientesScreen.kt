@@ -31,7 +31,6 @@ fun SeleccionarIngredientesScreen(
     PantallaConBarra(
         titulo = "Selecciona ingredientes",
         onVolver = onVolver,
-        // aqui tenemos el botón fijo abajo, siempre visible
         barraInferior = {
             Column(modifier = Modifier.padding(16.dp)) {
                 Button(
@@ -61,8 +60,6 @@ fun SeleccionarIngredientesScreen(
                 text = "Marca los ingredientes que tienes",
                 style = MaterialTheme.typography.titleMedium
             )
-
-            // aqui tenemos  Los ingredientes agrupados por categoría, uno por fila con su casilla
             RecetaRepositoryLocal.ingredientes.groupBy { it.categoria }.forEach { (categoria, lista) ->
                 TituloSeccion(textoCategoria(categoria))
                 lista.forEach { ingrediente ->

@@ -8,13 +8,10 @@ import com.example.oursour.model.CarroLocal
 import com.example.oursour.model.PedidosLocal
 
 class PagoViewModel: ViewModel() {
-    // datos que vienen del carro
     val pedido: String
         get() = "Pedido N ${PedidosLocal.siguienteNumero()}°"
     val monto: Double
         get() = CarroLocal.total
-
-    // opciones de pago y cuotas disponibles
     val opciones = listOf("Tarjeta de débito", "Tarjeta de crédito", "Tarjeta de prueba (rechazada)")
     val cuotasDisponibles = listOf(1, 3, 6, 12)
 
@@ -22,7 +19,7 @@ class PagoViewModel: ViewModel() {
     var cuotas by mutableStateOf(1)
     var textoVisible by mutableStateOf(false)
 
-    // las cuotas solo se eligen con tarjeta de crédito
+
     val esCredito: Boolean
         get() = metodo == "Tarjeta de crédito"
 

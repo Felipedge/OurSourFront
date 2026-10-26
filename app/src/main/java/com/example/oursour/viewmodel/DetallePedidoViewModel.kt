@@ -6,7 +6,6 @@ import com.example.oursour.model.PedidoLocal
 import com.example.oursour.model.PedidosLocal
 
 class DetallePedidoViewModel : ViewModel(){
-    // el pedido que se eligió en Mis pedidos
     private val elegido: PedidoLocal? =
         PedidosLocal.pedidos.firstOrNull { it.numero == PedidosLocal.numeroElegido }
 

@@ -37,7 +37,7 @@ fun ResultadoPagoScreen(
             Text(text = resultadoPagoViewModel.mensaje, style = MaterialTheme.typography.bodyLarge)
             Text(text = resultadoPagoViewModel.pedido, style = MaterialTheme.typography.bodyMedium)
 
-            //aqui tenemos los Botónes para volver al inicio
+
             Button(
                 onClick = onVolverAlInicioClick,
                 modifier = Modifier

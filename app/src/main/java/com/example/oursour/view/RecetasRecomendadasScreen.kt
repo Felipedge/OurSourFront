@@ -41,7 +41,7 @@ fun RecetasRecomendadasScreen(
                 )
             }
 
-            // aqui tenemos  Una tarjeta por receta recomendada
+
             recetasRecomendadasViewModel.recomendadas.forEach { recomendada ->
                 Card(
                     modifier = Modifier

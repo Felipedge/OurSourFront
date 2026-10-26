@@ -36,17 +36,17 @@ fun DetalleRecetaScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            //aqui tenemos los  Tipo de receta
+
             Etiqueta(texto = textoTipoReceta(detalleRecetaViewModel.tipo))
 
-            // aqui tenemos los  Ingredientes de la receta (✓ los que tienes, ✗ los que faltan)
+
             TituloSeccion("Ingredientes")
             detalleRecetaViewModel.ingredientes.forEach { ingrediente ->
                 val marca = if (ingrediente in detalleRecetaViewModel.faltantes) "✗ " else "✓ "
                 Text(text = marca + ingrediente.nombre, style = MaterialTheme.typography.bodyLarge)
             }
 
-            // aqui tenemos los  Ingredientes que faltan
+
             TituloSeccion("Te faltan")
             if (detalleRecetaViewModel.faltantes.isEmpty()) {
                 Text(text = "Tienes todos los ingredientes", style = MaterialTheme.typography.bodyLarge)
@@ -73,16 +73,15 @@ fun DetalleRecetaScreen(
                 }
             }
 
-            // mensaje después de agregar un producto
+
             if (detalleRecetaViewModel.mensaje != "") {
                 Text(text = detalleRecetaViewModel.mensaje, style = MaterialTheme.typography.bodyMedium)
             }
 
-            //aqui tenemos los  Pasos de preparación
             TituloSeccion("Preparación")
             Text(text = detalleRecetaViewModel.pasos, style = MaterialTheme.typography.bodyLarge)
 
-            // Botón para ir al carro
+
             Button(
                 onClick = onIrAlCarroClick,
                 modifier = Modifier

@@ -12,7 +12,7 @@ import com.example.oursour.model.RecetaRepositoryLocal
 import kotlinx.coroutines.launch
 
 class DetalleRecetaViewModel : ViewModel() {
-    //aqui tenemos la  receta que se eligió en RecetasRecomendadas (puede no existir)
+
     private val receta = RecetaRepositoryLocal.recetas.firstOrNull {
         it.id == RecetaRepositoryLocal.recetaElegida
     }
@@ -22,16 +22,16 @@ class DetalleRecetaViewModel : ViewModel() {
     val tipo = receta?.tipo ?: ""
     val pasos = receta?.pasos ?: ""
 
-    // aqui  tenemos  todos los ingredientes de la receta
+
     val ingredientes = RecetaRepositoryLocal.ingredientes.filter { it.id in idsReceta }
 
-    // aqui tenemos  los que el usuario no marcó
+
     val faltantes = ingredientes.filter { it.id !in RecetaRepositoryLocal.seleccionActual }
 
-    //aqui buscamos el  mensaje que se muestra después de agregar un producto al carro
+
     var mensaje by mutableStateOf("")
 
-    //aqui buscamos los destilados y licores se venden en el catálogo, el resto no
+
     fun seVende(ingrediente: Ingrediente): Boolean {
         var respuesta = false
         if (ingrediente.categoria == "DESTILADO" || ingrediente.categoria == "LICOR") {
@@ -40,7 +40,7 @@ class DetalleRecetaViewModel : ViewModel() {
         return respuesta
     }
 
-    //aqui  buscamos en el catálogo un producto con el nombre del ingrediente y lo agrega al carro
+
     fun agregarAlCarro(ingrediente: Ingrediente) {
         viewModelScope.launch {
             ProductoRepositoryLocal.listar()

@@ -39,12 +39,12 @@ fun CarritoScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            //aqui tenemos los  Mensaje si el carrito no tiene productos
+
             if (carritoViewModel.items.isEmpty()) {
                 Text(text = "Tu carrito está vacío", style = MaterialTheme.typography.bodyLarge)
             }
 
-            //aqui tenemos los  Productos del carrito
+
             carritoViewModel.items.forEach { item ->
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(
@@ -82,10 +82,10 @@ fun CarritoScreen(
                 }
             }
 
-            //aqui tenemos la Cantidad de productos
+
             Text(text = carritoViewModel.resumen, style = MaterialTheme.typography.titleMedium)
 
-            // Montos del carrito
+
             Text(text = "Subtotal: ${formatearPesos(carritoViewModel.subtotal)}", style = MaterialTheme.typography.bodyLarge)
             Text(text = "Despacho: ${formatearPesos(carritoViewModel.costoDespacho)}", style = MaterialTheme.typography.bodyLarge)
             Text(
@@ -94,7 +94,7 @@ fun CarritoScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            //aqui tenemos los Botónes principal, solo si hay productos
+
             if (carritoViewModel.items.isNotEmpty()) {
                 Button(
                     onClick = onContinuarClick,
@@ -107,7 +107,7 @@ fun CarritoScreen(
                 }
             }
 
-            //aqui tenemos los  Botónes secundario
+
             OutlinedButton(
                 onClick = onSeguirComprandoClick,
                 modifier = Modifier
