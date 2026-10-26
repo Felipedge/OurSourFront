@@ -1,5 +1,9 @@
 package com.example.oursour.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.oursour.dao.BaseDatos
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
@@ -45,6 +49,48 @@ data class ProductoVendido(
     val cantidad: Int
 )
 
+// ==================== Tablas de Room (@Entity) ====================
+
+@Entity(tableName = "busqueda")
+data class BusquedaEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val fecha: String
+)
+
+@Entity(tableName = "busqueda_ingrediente")
+data class BusquedaIngredienteEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val idBusqueda: Long,
+    val idIngrediente: Long,
+    val nombre: String
+)
+
+@Entity(tableName = "consulta_receta")
+data class ConsultaRecetaEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val idReceta: Long,
+    val nombre: String,
+    val fecha: String
+)
+
+@Entity(tableName = "venta")
+data class VentaEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val total: Double,
+    val fecha: String
+)
+
+@Entity(tableName = "venta_producto")
+data class VentaProductoEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val idVenta: Long,
+    val idProducto: Long,
+    val nombre: String,
+    val cantidad: Int
+)
+
+// ==================== Repositorio ====================
+
 interface MetricasRepository {
     suspend fun resumen(): Result<ResumenMetricas>
     suspend fun ingredientesMasBuscados(limite: Int = 10): Result<List<Conteo>>
@@ -53,9 +99,9 @@ interface MetricasRepository {
     suspend fun combinacionesFrecuentes(limite: Int = 10): Result<List<Combinacion>>
     suspend fun tendencias(dias: Int = 30): Result<Tendencia>
 
-    fun registrarBusqueda(ingredientes: List<Referencia>)
-    fun registrarConsulta(receta: Referencia)
-    fun registrarVenta(productos: List<ProductoVendido>, total: Double)
+    suspend fun registrarBusqueda(ingredientes: List<Referencia>)
+    suspend fun registrarConsulta(receta: Referencia)
+    suspend fun registrarVenta(productos: List<ProductoVendido>, total: Double)
 }
 
 object MetricasRepositoryLocal : MetricasRepository {
@@ -68,17 +114,17 @@ object MetricasRepositoryLocal : MetricasRepository {
     private val ventas = mutableListOf<Venta>()
 
 
-    override fun registrarBusqueda(ingredientes: List<Referencia>) {
+    override suspend fun registrarBusqueda(ingredientes: List<Referencia>) {
         if (ingredientes.isNotEmpty()) {
             busquedas.add(Busqueda(LocalDate.now(), ingredientes.distinctBy { it.id }))
         }
     }
 
-    override fun registrarConsulta(receta: Referencia) {
+    override suspend fun registrarConsulta(receta: Referencia) {
         consultas.add(receta)
     }
 
-    override fun registrarVenta(productos: List<ProductoVendido>, total: Double) {
+    override suspend fun registrarVenta(productos: List<ProductoVendido>, total: Double) {
         ventas.add(Venta(productos, total))
     }
 
@@ -155,4 +201,71 @@ object MetricasRepositoryLocal : MetricasRepository {
         delay(300)
         return Result.success(bloque())
     }
+}
+
+object MetricasRepositoryRoom : MetricasRepository {
+
+    private val dao get() = BaseDatos.obtener().metricasDao()
+
+    private fun hoy(): String = LocalDate.now().toString()
+
+    override suspend fun registrarBusqueda(ingredientes: List<Referencia>) {
+        if (ingredientes.isNotEmpty()) {
+            dao.registrarBusqueda(hoy(), ingredientes.distinctBy { it.id })
+        }
+    }
+
+    override suspend fun registrarConsulta(receta: Referencia) {
+        dao.insertarConsulta(ConsultaRecetaEntity(idReceta = receta.id, nombre = receta.nombre, fecha = hoy()))
+    }
+
+    override suspend fun registrarVenta(productos: List<ProductoVendido>, total: Double) {
+        dao.registrarVenta(hoy(), total, productos)
+    }
+
+    override suspend fun resumen() = consultar {
+        ResumenMetricas(
+            totalBusquedas = dao.totalBusquedas(),
+            totalConsultasReceta = dao.totalConsultas(),
+            totalPedidosPagados = dao.totalVentas(),
+            ventasTotales = dao.montoVentas()
+        )
+    }
+
+    override suspend fun ingredientesMasBuscados(limite: Int) = consultar { dao.ingredientesMasBuscados(limite) }
+
+    override suspend fun recetasMasConsultadas(limite: Int) = consultar { dao.recetasMasConsultadas(limite) }
+
+    override suspend fun productosMasVendidos(limite: Int) = consultar { dao.productosMasVendidos(limite) }
+
+    override suspend fun combinacionesFrecuentes(limite: Int) = consultar { dao.combinacionesFrecuentes(limite) }
+
+    override suspend fun tendencias(dias: Int) = consultar {
+        val totalDias = dias.coerceIn(1, 365)
+        val hasta = LocalDate.now()
+        val desde = hasta.minusDays((totalDias - 1).toLong())
+
+        val conDatos = dao.busquedasPorDiaDesde(desde.toString()).associate { it.fecha to it.busquedas }
+        val porDia = (0 until totalDias).map { i ->
+            val fecha = desde.plusDays(i.toLong()).toString()
+            BusquedasDia(fecha, conDatos[fecha] ?: 0L)
+        }
+
+        Tendencia(
+            desde = desde.toString(),
+            hasta = hasta.toString(),
+            totalBusquedas = porDia.sumOf { it.busquedas },
+            busquedasPorDia = porDia,
+            ingredientesDelPeriodo = dao.ingredientesDesde(desde.toString(), 5)
+        )
+    }
+
+    private suspend fun <T> consultar(bloque: suspend () -> T): Result<T> =
+        try {
+            Result.success(bloque())
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }

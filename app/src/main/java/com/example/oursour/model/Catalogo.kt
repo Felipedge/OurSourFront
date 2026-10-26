@@ -29,6 +29,7 @@ interface ProductoRepository {
     suspend fun crear(req: ProductoRequest): Result<Producto>
     suspend fun actualizar(idProducto: Long, req: ProductoRequest): Result<Producto>
     suspend fun eliminar(idProducto: Long): Result<Unit>
+    suspend fun activar(idProducto: Long): Result<Unit>
 }
 
 object ProductoRepositoryLocal : ProductoRepository {
@@ -90,11 +91,26 @@ object ProductoRepositoryLocal : ProductoRepository {
         productos[indice] = actualizado
         return Result.success(actualizado)
     }
-        override suspend fun eliminar(idProducto: Long): Result<Unit> {
+
+    override suspend fun eliminar(idProducto: Long): Result<Unit> {
         delay(300)
         val indice = productos.indexOfFirst { it.idProducto == idProducto }
         if (indice == -1) return Result.failure(NoSuchElementException("Producto $idProducto no encontrado"))
         productos[indice] = productos[indice].copy(activo = false)
         return Result.success(Unit)
     }
+
+    // vuelve a mostrar en el catalogo un producto desactivado
+    override suspend fun activar(idProducto: Long): Result<Unit> {
+        delay(300)
+        val indice = productos.indexOfFirst { it.idProducto == idProducto }
+        if (indice == -1) return Result.failure(NoSuchElementException("Producto $idProducto no encontrado"))
+        productos[indice] = productos[indice].copy(activo = true)
+        return Result.success(Unit)
+    }
 }
+
+const val PREFIJO_QR = "oursour:producto:"
+
+fun leerCodigoProducto(texto: String): Long? =
+    if (texto.startsWith(PREFIJO_QR)) texto.removePrefix(PREFIJO_QR).toLongOrNull() else null
